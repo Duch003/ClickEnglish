@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2024
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickEnglish", "ClickEnglish\ClickEnglish.csproj", "{7FF91864-B90F-4773-A518-922E6FBD977D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FF91864-B90F-4773-A518-922E6FBD977D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FF91864-B90F-4773-A518-922E6FBD977D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FF91864-B90F-4773-A518-922E6FBD977D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FF91864-B90F-4773-A518-922E6FBD977D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {36141BF6-E142-43AB-9709-FC09E8A85FA7}
+	EndGlobalSection
+EndGlobal
