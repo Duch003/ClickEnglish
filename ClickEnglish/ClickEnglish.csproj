@@ -34,8 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Npgsql, Version=3.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.2.7\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -54,6 +60,46 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Category.cs" />
+    <Compile Include="CategoryManager.xaml.cs">
+      <DependentUpon>CategoryManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseManager.cs" />
+    <Compile Include="DictionaryManager.xaml.cs">
+      <DependentUpon>DictionaryManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IQuestionDatapack.cs" />
+    <Compile Include="OnClosedWindowEventArgs.cs" />
+    <Compile Include="Question.cs" />
+    <Compile Include="Result.xaml.cs">
+      <DependentUpon>Result.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CategoryManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DictionaryManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LogInWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainGameBoard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,10 +108,28 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LogInWindow.xaml.cs">
+      <DependentUpon>LogInWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainGameBoard.xaml.cs">
+      <DependentUpon>MainGameBoard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Result.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Style.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -85,6 +149,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -92,6 +157,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="icons\MainWindow_About.png" />
+    <Resource Include="icons\MainWindow_Categories.png" />
+    <Resource Include="icons\MainWindow_EditCategory.png" />
+    <Resource Include="icons\MainWindow_EditDictionary.png" />
+    <Resource Include="icons\MainWindow_MainIcon.png" />
+    <Resource Include="icons\MainWindow_RandomVocabularySet.png" />
+    <Resource Include="icons\MainWindow_Settings.png" />
+    <Resource Include="icons\MainWindow_TimeChallange.png" />
+    <Resource Include="icons\MainWindow_WholeDictionary.png" />
+    <Resource Include="icons\Settings_MainIcon.ico" />
+    <Resource Include="icons\Settings_SpeakerDisable.png" />
+    <Resource Include="icons\Settings_SpeakerEnable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="background\AssignCategory_Background.jpeg" />
+    <Resource Include="background\bridge1.jpg" />
+    <Resource Include="background\CategoryManager_Background.jpg" />
+    <Resource Include="background\default_picture.jpg" />
+    <Resource Include="background\DictionaryManager_Background.jpeg" />
+    <Resource Include="background\double_decker.jpg" />
+    <Resource Include="background\EnglishFlag_Background.jpg" />
+    <Resource Include="background\LogInWindow_Background.jpg" />
+    <Resource Include="background\About_Background.jpg" />
+    <Resource Include="background\London_Eye_Twilight.jpg" />
+    <Resource Include="background\london_eye_view.jpg" />
+    <Resource Include="background\MainGameBoard_Background.jpg" />
+    <Resource Include="background\Result_Background.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

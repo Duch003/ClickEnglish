@@ -1,0 +1,57 @@
+﻿<Window x:Class="ClickEnglish.CategoryManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClickEnglish"
+        mc:Ignorable="d"
+       Title="CategoryManager" Height="500" Width="500">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Window.Background>
+		<ImageBrush ImageSource="background/CategoryManager_Background.jpg"/>
+	</Window.Background>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+		<DataGrid Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="ID" Width="50"/>
+				<DataGridTextColumn Header="Category Name"/>
+			</DataGrid.Columns>
+		</DataGrid>
+
+		<StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Add category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			</Button>
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Rename category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			</Button>
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			</Button>
+			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit without saving" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			</Button>
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit saving changes" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			</Button>
+		</StackPanel>
+	</Grid>
+</Window>

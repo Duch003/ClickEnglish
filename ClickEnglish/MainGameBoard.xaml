@@ -1,0 +1,76 @@
+﻿<Window x:Class="ClickEnglish.MainGameBoard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClickEnglish"
+        mc:Ignorable="d"
+        Title="MainGameBoard" Height="600" Width="800">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Window.Background>
+		<ImageBrush ImageSource="background/MainGameBoard_Background.jpg"/>
+	</Window.Background>
+
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
+
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+
+
+		<!--Timer-->
+		<TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Time"/>
+
+		<!--Upper Block-->
+		<TextBlock Grid.Row="1" Grid.Column="3" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Text="Questions goes here" FontSize="30" TextWrapping="Wrap" TextAlignment="Center" Padding="0 40 0 0"/>
+
+		<!--Pseudo-margin-->
+		<TextBlock Grid.Row="2" Grid.Column="0" Height="10"/>
+
+		<!--Bottom anwser block-->
+		<TextBox Grid.Row="3" Grid.Column="3" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Background="DarkBlue" Opacity="0.7" Text="Anwsers goes here" FontSize="30" Foreground="White" TextAlignment="Center" Padding="0 40 0 0"/>
+
+		<!--Image block-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderThickness="8">
+			<Image  Source="background/default_picture.jpg" Stretch="Fill"/>
+		</Border>
+
+		<!--Buttons-->
+		<!--<Button Grid.Row="4" Grid.Column="3" Content="OK" Style="{StaticResource Button_TileStyle}" Width="Auto" MinHeight="60" Height="Auto" Margin="7"/>-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" BorderThickness="5" Width="Auto" Height="60">
+			<Button  Content="Good anwser in case of failure" Style="{StaticResource Button_TileStyle}" Width="Auto" Height="60" Background="DarkBlue" Opacity="0.9"/>
+		</Border>
+
+
+		<!--Points-->
+		<TextBlock Grid.Row="1" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Margin="5" Background="DarkBlue" Text="Word repeats remaining"/>
+
+		<TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Words Counter (how much waiting)"/>
+
+		<TextBlock Grid.Row="3" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Passed sentences"/>
+
+		<TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Category" Background="DarkBlue"/>
+	</Grid>
+</Window>

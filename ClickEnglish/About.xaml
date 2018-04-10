@@ -1,0 +1,34 @@
+﻿<Window x:Class="ClickEnglish.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClickEnglish"
+        mc:Ignorable="d"
+        Title="About" Height="300" Width="300">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Window.Background>
+		<ImageBrush ImageSource="background/About_Background.jpg"/>
+	</Window.Background>
+
+	<StackPanel>
+		<TextBlock Style="{StaticResource TextBlock_TileStyle}" Margin="71,10" Height="212.284">
+			<StackPanel>
+				<TextBlock Style="{StaticResource TextBlock_Header}" Text="My Dictionary App" FontSize="15" Height="41.25"/>
+				<TextBlock Style="{StaticResource TextBlock_Description}" Text="By Tomasz Mankin (programmer)" Height="33.13" TextWrapping="WrapWithOverflow" Width="130.302"/>
+				<TextBlock Style="{StaticResource TextBlock_Header}" Text="Special Thanks to" FontSize="15" Height="38.017"/>
+				<TextBlock Style="{StaticResource TextBlock_Description}" Text="Ewelina Paluszak   (for keeping eye on design)" Height="51.234" TextWrapping="WrapWithOverflow" Width="130.948"/>
+			</StackPanel>
+		</TextBlock>
+		<Button Style="{StaticResource Button_TileStyle}" Height="27" FontFamily="Kristen ITC" FontSize="18">
+			<TextBlock Text="Exit" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+		</Button>
+	</StackPanel>
+</Window>

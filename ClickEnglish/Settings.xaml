@@ -1,0 +1,118 @@
+﻿<Window x:Class="ClickEnglish.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClickEnglish"
+        mc:Ignorable="d"
+        Icon="icons/Settings_MainIcon.ico"
+        Title="Settings" Height="400" Width="550">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Window.Background>
+		<ImageBrush ImageSource="background/EnglishFlag_Background.jpg"/>
+	</Window.Background>
+
+	<Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<!--Mute label-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="0" Grid.Column="0">
+			<TextBlock Style="{StaticResource TextBlock_TileStyle}">
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Height="47.46"/>
+					<TextBlock DockPanel.Dock="Bottom" Style="{StaticResource TextBlock_Header}" VerticalAlignment="Center" TextAlignment="Center"><Run Text="Mute"/></TextBlock>
+				</DockPanel>
+			</TextBlock>
+		</Border>
+
+		<!--Time Challange label-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="0" Grid.Column="1">
+			<TextBlock Style="{StaticResource TextBlock_TileStyle}">
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Height="32.46"/>
+					<TextBlock DockPanel.Dock="Bottom" Style="{StaticResource TextBlock_Header}">Time Challange time span</TextBlock>
+				</DockPanel>
+			</TextBlock>
+		</Border>
+
+		<!--Random Vocabulary Label-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="0" Grid.Column="2">
+			<TextBlock Style="{StaticResource TextBlock_TileStyle}" Height="Auto" Margin="0,-1,0,0">
+				<DockPanel>
+					<TextBlock DockPanel.Dock="Top" Height="34"/>
+					<TextBlock DockPanel.Dock="Bottom" Style="{StaticResource TextBlock_Header}" Height="81">Vocabulary Set size</TextBlock>
+				</DockPanel>
+			</TextBlock>
+		</Border>
+
+		<!--Mute - sound switch-->
+		<Border  Style="{StaticResource Border_WhiteFrame}" Grid.Row="1" Grid.Column="0">
+			<ToggleButton x:Name="tglSoundState">
+				<ToggleButton.Template>
+					<ControlTemplate TargetType="{x:Type ToggleButton}">
+						<StackPanel Orientation="Horizontal" Background="DarkRed" Opacity="0.8">
+							<Image>
+								<Image.Style>
+									<Style>
+										<Setter Property="Image.Source" 
+										        Value="icons/Settings_SpeakerEnable.png" />
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding IsChecked, 
+                                    RelativeSource={RelativeSource AncestorType=
+                                    {x:Type ToggleButton}}}" Value="True">
+												<Setter Property="Image.Source" 
+												        Value="icons/Settings_SpeakerDisable.png" />
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</Image.Style>
+							</Image>
+							<ContentPresenter Content="{TemplateBinding Content}" 
+							                  Margin="5" />
+						</StackPanel>
+					</ControlTemplate>
+				</ToggleButton.Template>
+			</ToggleButton>
+		</Border>
+
+		<!--Time slider-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="1" Grid.Column="1">
+			<TextBlock Style="{StaticResource TextBlock_TileStyle}">
+				<DockPanel>
+					<Slider x:Name="TimeSlider" Minimum="0" Maximum="15" Value="5" TickPlacement="BottomRight" TickFrequency="1" VerticalAlignment="Center"
+					        IsSnapToTickEnabled="True" Width="30" Orientation="Vertical" Height="146"/>
+					<TextBlock Text="{Binding Path=Value, ElementName=TimeSlider, StringFormat={}{0} min.}" 
+					           Width="104" Style="{StaticResource TextBlock_Description}" FontSize="30" Height="48" RenderTransformOrigin="0.5,0.5"/>
+				</DockPanel>
+				
+			</TextBlock>
+		</Border>
+
+		<!--Vocabulary slider-->
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="1" Grid.Column="2">
+			<TextBlock Style="{StaticResource TextBlock_TileStyle}">
+				<DockPanel Height="140">
+					<Slider x:Name="VocabularySlider"  Minimum="0" Maximum="100" Value="25" TickPlacement="BottomRight" TickFrequency="1"
+					        IsSnapToTickEnabled="True" Orientation="Vertical"></Slider>
+					<TextBlock  Text="{Binding Path=Value, ElementName=VocabularySlider, StringFormat={}{0} words}" TextWrapping="WrapWithOverflow"
+					            Width="110" Style="{StaticResource TextBlock_Description}" FontSize="23" Margin="5,34,5,5"></TextBlock>
+				</DockPanel>
+			</TextBlock>
+		</Border>
+
+	</Grid>
+</Window>

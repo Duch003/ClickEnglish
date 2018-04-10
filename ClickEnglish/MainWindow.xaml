@@ -4,9 +4,98 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        mc:Ignorable="d" Padding="10" ResizeMode="NoResize" Icon="icons/MainWindow_MainIcon.png"
+        Title="ClickEnglish!" Height="500" Width="700">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Style.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+	<Window.Background>
+		<ImageBrush ImageSource="background/EnglishFlag_Background.jpg"/>
+	</Window.Background>
+
+	<Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+			<ColumnDefinition Width="Auto"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+
+		<!--Random set Button-->
+		<Button Grid.Row="1" Grid.Column="1" Style="{StaticResource Button_TileStyle}" Click="RandomVocabSet_Click" >
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Random Vocab Set</TextBlock>
+				<Image Source="icons/MainWindow_RandomVocabularySet.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Particular category-->
+		<Button Grid.Row="2" Grid.Column="1" Style="{StaticResource Button_TileStyle}" Click="ParticularCategory_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Particular Category</TextBlock>
+				<Image Source="icons/MainWindow_Categories.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Time Challange-->
+		<Button  Grid.Row="1" Grid.Column="2" Style="{StaticResource Button_TileStyle}" Click="TimeChallange_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Time Challange</TextBlock>
+				<Image Source="icons/MainWindow_TimeChallange.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Whole dictionary-->
+		<Button Grid.Row="2" Grid.Column="2"  Style="{StaticResource Button_TileStyle}" Click="WholeDictionary_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Whole Dictionary</TextBlock>
+				<Image Source="icons/MainWindow_WholeDictionary.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Edit dictionary-->
+		<Button Grid.Row="1" Grid.Column="4"  Style="{StaticResource Button_TileStyle}" Click="EditDictionary_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Edit Dictionary</TextBlock>
+				<Image Source="icons/MainWindow_EditDictionary.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Settings-->
+		<Button Grid.Row="2" Grid.Column="4" Style="{StaticResource Button_TileStyle}" Click="Settings_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Settings</TextBlock>
+				<Image Source="icons/MainWindow_Settings.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--Edit Categories-->
+		<Button Grid.Row="1" Grid.Column="5" Style="{StaticResource Button_TileStyle}" Click="EditCategories_Click" >
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Edit Categories</TextBlock>
+				<Image Source="icons/MainWindow_EditCategory.png"></Image>
+			</DockPanel>
+		</Button>
+
+		<!--About-->
+		<Button Grid.Row="2" Grid.Column="5"  Style="{StaticResource Button_TileStyle}" Click="About_Click">
+			<DockPanel>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">About</TextBlock>
+				<Image Source="icons/MainWindow_About.png"></Image>
+			</DockPanel>
+		</Button>
+	</Grid>
 </Window>

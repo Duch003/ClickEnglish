@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickEnglish", "ClickEnglish\ClickEnglish.csproj", "{7FF91864-B90F-4773-A518-922E6FBD977D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickEnglish_IntegrationTests", "ClickEnglish_IntegrationTests\ClickEnglish_IntegrationTests.csproj", "{915FD149-DB77-4136-8172-D22689018783}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickEnglish_UnitTests", "ClickEnglish_UnitTests\ClickEnglish_UnitTests.csproj", "{D07F8FA3-A970-43A5-8E49-13F5ED80D6A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{7FF91864-B90F-4773-A518-922E6FBD977D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FF91864-B90F-4773-A518-922E6FBD977D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FF91864-B90F-4773-A518-922E6FBD977D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{915FD149-DB77-4136-8172-D22689018783}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{915FD149-DB77-4136-8172-D22689018783}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{915FD149-DB77-4136-8172-D22689018783}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{915FD149-DB77-4136-8172-D22689018783}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D07F8FA3-A970-43A5-8E49-13F5ED80D6A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D07F8FA3-A970-43A5-8E49-13F5ED80D6A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D07F8FA3-A970-43A5-8E49-13F5ED80D6A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D07F8FA3-A970-43A5-8E49-13F5ED80D6A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
