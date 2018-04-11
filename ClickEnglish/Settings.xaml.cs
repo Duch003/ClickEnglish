@@ -22,21 +22,35 @@ namespace ClickEnglish
         //private byte TEMP_rndVocabSize;
         //private bool TEMP_soundState;
         //private uint TEMP_time;
-        public event EventHandler<WindowEventArgs> DialogFinished;
-        public Settings(ref int rndVocabSize, ref bool soundState, ref int time)
+        private DatabaseManager _manager;
+        public Settings(DatabaseManager manager)
         {
+            //TODO Dopisać ograniczniki sliderów
             InitializeComponent();
-            VocabularySlider.Value  = rndVocabSize;
-            //Dopisać aktualny maks dla slidera
-            TimeSlider.Value = time;
-            tglSoundState.IsChecked = soundState;
+            _manager = manager;
+            VocabularySlider.Value  = GlobalSettings.RandomVocabulaySize;
+            TimeSlider.Value = GlobalSettings.Time;
+            tglSoundState.IsChecked = GlobalSettings.SoundState;
         }
 
-        public void OnDialogFinished()
+        private void Settings_Apply(object sender, RoutedEventArgs e)
         {
-            if (DialogFinished != null)
-                DialogFinished(this, new WindowEventArgs(time: (int)TimeSlider.Value, rndVocabularySize: (int)VocabularySlider.Value, soundState: (bool)tglSoundState.IsChecked));
+            if(_manager.IsConnected())
+            {
+                GlobalSettings.RandomVocabulaySize = (int)VocabularySlider.Value;
+                GlobalSettings.Time = (int)TimeSlider.Value;
+                GlobalSettings.SoundState = (bool)tglSoundState.IsChecked;
+                _manager.SaveSettings();
+
+                this.Close();
+            }
+            else
+                MessageBox.Show("Database is disconnected.", "Cannot save settings.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
+        private void Settings_Cancel(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -73,7 +73,6 @@
     </Compile>
     <Compile Include="GlobalSettings.cs" />
     <Compile Include="IQuestionDatapack.cs" />
-    <Compile Include="OnClosedWindowEventArgs.cs" />
     <Compile Include="Question.cs" />
     <Compile Include="Result.xaml.cs">
       <DependentUpon>Result.xaml</DependentUpon>

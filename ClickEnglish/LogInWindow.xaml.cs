@@ -65,7 +65,7 @@ namespace ClickEnglish
         //SINGING IN
         private void SignIn_Click(object sender, RoutedEventArgs e)
         {
-            if (_manager.IsConnected())
+            if (!_manager.IsConnected())
             {
                 MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -73,11 +73,11 @@ namespace ClickEnglish
             DataSet temp;
             if (_manager.TryToLogIn(txtUser.Text, txtPassword.Password, out temp) && temp != null && temp.Tables.Count >= 1)
             {
-                var userid = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("id"));
-                var setting_RndVocabSize = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("vocabularysize"));
-                var setting_SoundState = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("soundstatus"));
-                var setting_Time = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("timechallange"));
-                //TODO Static setting container? Zmiana stanow poprzez metody
+                GlobalSettings.ID = Convert.ToInt32(temp.Tables[0].Rows[0][0]);
+                GlobalSettings.RandomVocabulaySize = Convert.ToInt32(temp.Tables[0].Rows[0][3]);
+                GlobalSettings.Time = Convert.ToInt32(temp.Tables[0].Rows[0][5]);
+                GlobalSettings.SoundState = Convert.ToBoolean(temp.Tables[0].Rows[0][4]);
+                this.Close();
                 return;
             }
             MessageBox.Show("Invalid user or password.", "Cannot sing in.", MessageBoxButton.OK, MessageBoxImage.Information);

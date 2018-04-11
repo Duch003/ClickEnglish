@@ -23,6 +23,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"></RowDefinition>
 			<RowDefinition Height="Auto"></RowDefinition>
+			<RowDefinition Height="Auto"></RowDefinition>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -96,7 +97,7 @@
 					<Slider x:Name="TimeSlider" Minimum="0" Maximum="15" Value="5" TickPlacement="BottomRight" TickFrequency="1" VerticalAlignment="Center"
 					        IsSnapToTickEnabled="True" Width="30" Orientation="Vertical" Height="146"/>
 					<TextBlock Text="{Binding Path=Value, ElementName=TimeSlider, StringFormat={}{0} min.}" 
-					           Width="104" Style="{StaticResource TextBlock_Description}" FontSize="30" Height="48" RenderTransformOrigin="0.5,0.5"/>
+					           Width="104" Style="{StaticResource TextBlock_Description}" FontSize="30" Height="48"/>
 				</DockPanel>
 				
 			</TextBlock>
@@ -113,6 +114,17 @@
 				</DockPanel>
 			</TextBlock>
 		</Border>
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="2" Grid.Column="1">
+			<Button Style="{StaticResource Button_TileStyle}" Height="25" Opacity="0.9" FontFamily="Kristen ITC" Click="Settings_Cancel">
+				<TextBlock Text="Cancel" TextAlignment="Center" Padding="5"/>
+			</Button>
+		</Border>
+		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="2" Grid.Column="2">
+			<Button Style="{StaticResource Button_TileStyle}" Height="25" Opacity="0.9" FontFamily="Kristen ITC" Click="Settings_Apply">
+				<TextBlock Text="Apply" TextAlignment="Center" Padding="5"/>
+			</Button>
+		</Border>
+
 	</Grid>
 
 	

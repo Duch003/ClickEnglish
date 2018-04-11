@@ -20,13 +20,6 @@ namespace ClickEnglish
     /// </summary>
     public partial class MainWindow : Window
     {
-        //TODO Wszystkie ustawienia przypisane do użytkownika
-        //TODO Dodać hasło dla użytkowników
-        //Current user settings
-        private bool _soundState;                        //State of sounds
-        private int _time;                 //Time for time challange [ms]
-        private int _rndVocabularySize;                        //Number of words in challange
-        private int _myId;                                 //Id of logged user
         private DatabaseManager _manager;
 
         public MainWindow()
@@ -34,13 +27,12 @@ namespace ClickEnglish
             InitializeComponent();
             _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
             OpenLogInScreen();
-            MessageBox.Show($"{_soundState}, {_time}, {_rndVocabularySize}, {_myId}");
         }
 
         private void OpenSettings()
         {
             this.IsEnabled = false;
-            var temp = new Settings(ref _rndVocabularySize, ref _soundState, ref _time);
+            var temp = new Settings(_manager);
             //temp.DialogFinished += new EventHandler<WindowEventArgs>(Settings_DialogFinished);
             temp.ShowDialog();
             this.IsEnabled = true;
@@ -51,7 +43,7 @@ namespace ClickEnglish
             this.IsEnabled = false;
             var temp = new LogInWindow();
             temp.ShowDialog();
-            if (temp.DialogResult.HasValue || !temp.DialogResult.HasValue) this.IsEnabled = true;
+            this.IsEnabled = true;
         }
 
         //private void Settings_DialogFinished(object sender, WindowEventArgs e)
@@ -65,7 +57,9 @@ namespace ClickEnglish
 
         private void Settings_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             OpenSettings();
+            this.IsEnabled = true;
         }
 
         private void RandomVocabSet_Click(object sender, RoutedEventArgs e)

@@ -18,6 +18,7 @@ namespace ClickEnglish
         private static NpgsqlConnection _connect;
         private static string _connString;
         private static bool _connected;
+        
 
         public DatabaseManager(string server, string user, string password, string port, string dbName)
         {
@@ -201,7 +202,7 @@ namespace ClickEnglish
                 throw new Exception("Method: TryToLogIn. Some arguments are null or empty or contains forbidden signs.");
 
             var hashedPassword = HashString(password);
-            var queryResult = Query($"SELECT user_name, user_password FROM users WHERE user_name = '{nick}' AND user_password = '{hashedPassword}'");
+            var queryResult = Query($"SELECT * FROM users WHERE user_name = '{nick}' AND user_password = '{hashedPassword}'");
 
             if (queryResult.Tables.Count < 1)
             {
@@ -215,8 +216,8 @@ namespace ClickEnglish
             }
             else if (queryResult.Tables[0].Rows.Count == 1)
             {
-                var tempUser = queryResult.Tables[0].Rows[0][0].ToString();     //User
-                var tempPassword = queryResult.Tables[0].Rows[0][1].ToString(); //Password
+                var tempUser = queryResult.Tables[0].Rows[0][1].ToString();     //User
+                var tempPassword = queryResult.Tables[0].Rows[0][2].ToString(); //Password
 
                 if (tempUser.Equals(nick) && tempPassword.Equals(hashedPassword))
                 {
@@ -272,13 +273,17 @@ namespace ClickEnglish
         }
 
         //True if successeded
-        public bool SaveSettings(ref byte vocabularySize, ref bool soundState, ref uint time, byte userId)
+        public bool SaveSettings()
         {
             if (!_connected)
                 throw new Exception("Connection with server is closed.");
             try
             {
-                var query = $"UPDATE users SET vocabularySize = {vocabularySize}, soundState = {soundState}, timeChallange = {time} WHERE id = {userId}";
+                var query = $"UPDATE users SET " +
+                    $"vocabularySize = {GlobalSettings.RandomVocabulaySize}, " +
+                    $"soundStatus = {GlobalSettings.SoundState}, " +
+                    $"timeChallange = {GlobalSettings.Time} " +
+                    $"WHERE id = {GlobalSettings.ID}";
                 NonQuery(query);
                 return true;
             }

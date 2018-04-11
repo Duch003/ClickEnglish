@@ -8,30 +8,66 @@ namespace ClickEnglish
 {
     public static class GlobalSettings
     {
-        private static bool _soundState;          //State of sounds
-        private static int _time;                 //Time for time challange [ms]
-        private static int _rndVocabularySize;    //Number of words in challange
-        private static int _myId;                 //Id of logged user
-
-        public static bool GetSoundState()
+        //State of sounds
+        //False - disabled
+        private static bool _soundState;          
+        public static bool SoundState
         {
-            return _soundState;
+            get
+            {
+                return _soundState;
+            }
+            set
+            {
+                _soundState = value;
+            }
         }
-
-        public static int GetTime()
+        //Time for time challange
+        //Min: 1 min., max 15 min.
+        private static int _time;                 
+        public static int Time
         {
-            return _time;
+            get
+            {
+                return _time;
+            }
+            set
+            {
+                if (value >= 1 && value <= 15)
+                    _time = value;
+                else
+                    _time = 5;
+            }
         }
-
-        public static int GetRandmVocabularySize()
+        //Number of words in challange 
+        //Min: 5, max: 100
+        private static int _rndVocabularySize;    
+        public static int RandomVocabulaySize
         {
-            return _rndVocabularySize;
+            get
+            {
+                return _rndVocabularySize;
+            }
+            set
+            {
+                if (value >= 5 && value <= 100)
+                    _rndVocabularySize = value;
+                else
+                    _rndVocabularySize = 15;
+            }
         }
-
-        public static int GetId()
+        //Id of logged user
+        private static int _myId;                 
+        public static int ID
         {
-            return _myId;
+            get
+            {
+                return _myId;
+            }
+            set
+            {
+                _myId = value;
+            }
         }
-
     }
 }
