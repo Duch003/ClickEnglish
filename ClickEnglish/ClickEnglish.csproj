@@ -71,6 +71,7 @@
     <Compile Include="DictionaryManager.xaml.cs">
       <DependentUpon>DictionaryManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSettings.cs" />
     <Compile Include="IQuestionDatapack.cs" />
     <Compile Include="OnClosedWindowEventArgs.cs" />
     <Compile Include="Question.cs" />

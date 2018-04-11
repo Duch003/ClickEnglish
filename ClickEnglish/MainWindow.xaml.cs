@@ -33,30 +33,33 @@ namespace ClickEnglish
         {
             InitializeComponent();
             _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
-            OpenSettings();
+            OpenLogInScreen();
             MessageBox.Show($"{_soundState}, {_time}, {_rndVocabularySize}, {_myId}");
         }
 
         private void OpenSettings()
         {
             this.IsEnabled = false;
-            var temp = new Settings();
-            temp.DialogFinished += new EventHandler<WindowEventArgs>(Settings_DialogFinished);
+            var temp = new Settings(ref _rndVocabularySize, ref _soundState, ref _time);
+            //temp.DialogFinished += new EventHandler<WindowEventArgs>(Settings_DialogFinished);
             temp.ShowDialog();
             this.IsEnabled = true;
         }
 
-        private void Settings_DialogFinished(object sender, WindowEventArgs e)
+        private void OpenLogInScreen()
         {
-            _soundState = e.SoundState;
-            _time = e.Time;
-            _rndVocabularySize = e.RndVocabularySize;
+            this.IsEnabled = false;
+            var temp = new LogInWindow();
+            temp.ShowDialog();
+            if (temp.DialogResult.HasValue || !temp.DialogResult.HasValue) this.IsEnabled = true;
         }
 
-        public void SaveSettings()
-        {
-
-        }
+        //private void Settings_DialogFinished(object sender, WindowEventArgs e)
+        //{
+        //    _soundState = e.SoundState;
+        //    _time = e.Time;
+        //    _rndVocabularySize = e.RndVocabularySize;
+        //}
 
         #region Events
 

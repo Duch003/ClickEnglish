@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d"
         Icon="icons/Settings_MainIcon.ico"
-        Title="Settings" Height="400" Width="550">
+        Title="Settings" Height="420" Width="550">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -113,6 +113,7 @@
 				</DockPanel>
 			</TextBlock>
 		</Border>
-
 	</Grid>
+
+	
 </Window>

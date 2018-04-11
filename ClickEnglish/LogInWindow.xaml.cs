@@ -24,7 +24,7 @@ namespace ClickEnglish
         public LogInWindow()
         {
             InitializeComponent();
-            _manager = new DatabaseManager("localhost", "Duch003", "", "5432", "MyDictionaryApp_IntegrationTests");
+            _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
             try
             {
                 _manager.Connect();
@@ -40,7 +40,7 @@ namespace ClickEnglish
         //SINGING UP
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            if (_manager.IsConnected())
+            if (!_manager.IsConnected())
             {
                 MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -65,26 +65,21 @@ namespace ClickEnglish
         //SINGING IN
         private void SignIn_Click(object sender, RoutedEventArgs e)
         {
-            //if (_manager.IsConnected())
-            //{
-            //    MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            //    return;
-            //}
-            //DataSet temp;
-            //if (_manager.TryToLogIn(txtUser.Text, txtPassword.Password, out temp) && temp != null && temp.Tables.Count >= 1)
-            //{
-            //    //TODO Ustalić strukturę bazy danych
-            //    var userid = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("id"));
-            //    var setting_RndVocabSize = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("RndVocabSize"));
-            //    var setting_MuteSounds = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("MuteSounds"));
-            //    var setting_Time = Convert.ToUInt32(temp.Tables[0].Rows[0].Field<string>("Time"));
-            //    var wholeDictionary = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("AllowWholeVocab"));
-            //    MainWindow window = new MainWindow(userid, setting_RndVocabSize, setting_MuteSounds, setting_Time,
-            //        wholeDictionary, ref _manager);
-            //    window.Show();
-            //    Close();
+            if (_manager.IsConnected())
+            {
+                MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
-            //}
+            }
+            DataSet temp;
+            if (_manager.TryToLogIn(txtUser.Text, txtPassword.Password, out temp) && temp != null && temp.Tables.Count >= 1)
+            {
+                var userid = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("id"));
+                var setting_RndVocabSize = Convert.ToByte(temp.Tables[0].Rows[0].Field<string>("vocabularysize"));
+                var setting_SoundState = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("soundstatus"));
+                var setting_Time = Convert.ToBoolean(temp.Tables[0].Rows[0].Field<string>("timechallange"));
+                //TODO Static setting container? Zmiana stanow poprzez metody
+                return;
+            }
             MessageBox.Show("Invalid user or password.", "Cannot sing in.", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
