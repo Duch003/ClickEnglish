@@ -6,59 +6,53 @@ using System.Threading.Tasks;
 
 namespace ClickEnglish
 {
-    internal class Question
+    public class Question
     {
-        private readonly uint _id;
-        private readonly string _wordEng;
-        private readonly string _wordPl;
-        private readonly Category _category;
-        private readonly ushort _repeats;
-        private readonly float _percentage;
-        private readonly string _imgSrc;
+        public int ID { get; private set; }
+        public string WordEng { get; private set; }
+        public string WordPl { get; private set; }
+        public Category Category { get; private set; }
+        public int Repeats { get; private set; }
+        public double Percentage { get; private set; }
+        public string ImgSrc { get; private set; }
 
-        public Question(IQuestionDataPack dataPack)
+        public Question(int id, string eng, string pl, Category cat, double percent, string img)
         {
-            _repeats = dataPack.Repeats;
-            _wordPl = dataPack.WordPl;
-            _wordEng = dataPack.WordEng;
-            _category = dataPack.Category;
-            _percentage = dataPack.Percentage;
-            _imgSrc = dataPack.ImgSrc;
+            Repeats = 3;
+            WordPl = pl;
+            WordEng = eng;
+            Category = cat;
+            Percentage = Math.Round(percent * 100, 2);
+            ImgSrc = img;
         }
 
-        public uint GetId()
+        //True if can decrease
+        //False if 0
+        public bool DecrementRepeats()
         {
-            return _id;
+            if (Repeats == 0) return false;
+            else
+            {
+                Repeats--;
+                return true;
+            }
         }
 
-        public string GetWordEng()
+        public void IncrementRepeats()
         {
-            return _wordEng;
+            Repeats++;
         }
+    }
 
-        public string GetWordPl()
-        {
-            return _wordPl;
-        }
+    public class Category
+    {
+        public int Id { get; private set; }
+        public string Name { get; private set; }
 
-        public Category GetCategory()
+        public Category(int id, string name)
         {
-            return _category;
-        }
-
-        public ushort GetRepeats()
-        {
-            return _repeats;
-        }
-
-        public float GetPercentage()
-        {
-            return _percentage;
-        }
-
-        public string GetImageSource()
-        {
-            return _imgSrc;
+            Id = id;
+            Name = name;
         }
     }
 }

@@ -30,34 +30,34 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<TextBox Grid.Row="0" Grid.Column="0" Margin="5" Text="Searcher"/>
-		<ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="0" Margin="5">
-			<ComboBoxItem Content="Particular category"/>
-		</ComboBox>
+		<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" Text="Searcher" TextChanged="Searcher_TextChanged"/>
+		<ComboBox x:Name="cbCategories" Grid.Row="0" Grid.Column="1" SelectedIndex="0" Margin="5" DisplayMemberPath="Name" SelectionChanged="Category_SelectionChanged"/>
 
-		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10" AddingNewItem="AddNewRecord" BeginningEdit="EditRecord_Begin" CellEditEnding="EditRecord_End">
+		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="LightBlue"
+				  Margin="10" AddingNewItem="AddNewRecord" BeginningEdit="EditRecord_Begin" CellEditEnding="EditRecord_End">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Polish word" MinWidth="150"/>
-				<DataGridTextColumn Header="English word" MinWidth="150"/>
-				<DataGridTextColumn Header="Categories" MinWidth="150"/>
-				<DataGridTextColumn Header="Difficulty [%]" MinWidth="50"/>
+				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="130"/>
+				<DataGridTextColumn Header="English word" Binding="{Binding WordEng}" MinWidth="130"/>
+				<DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" MinWidth="100"/>
+				<DataGridTextColumn Header="Difficulty [%]" Binding="{Binding Percentage}" MinWidth="50"/>
+				<DataGridHyperlinkColumn Header="Picture" Binding="{Binding ImgSrc}" MinWidth="100"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
 		<StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="AddWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Add word" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="EditWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Edit word" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="RemoveWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="ExitWithoutSaving_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit without saving" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="ExitSavingChanges_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit saving changes" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
 		</StackPanel>

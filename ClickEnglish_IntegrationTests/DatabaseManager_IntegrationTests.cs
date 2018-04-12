@@ -145,5 +145,21 @@ namespace ClickEnglish_IntegrationTests
             Assert.IsTrue(result == expected);
         }
         #endregion
+
+        [TestCase(1, 3, true)]
+        [TestCase(2, 5, true)]
+        [TestCase(3, 5, true)]
+        [TestCase(4, 4, true)]
+        [TestCase(5, 6, true)]
+        [TestCase(20, 0, false)]
+        public void TakeDictionary_InnerLogicTest(int id, int expectedCount, bool expectedResult)
+        {
+            testManager.Connect();
+            bool result = testManager.TakeDictionary(id, out DataSet temp);
+            if (temp == null)
+                Assert.IsTrue(result == expectedResult);
+            else
+                Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
+        }
     }
 }

@@ -150,7 +150,7 @@ namespace ClickEnglish {
         }
         #endregion
 
-
+        #region Settings and accounts
         //True if exists
         //Flase if not
         //Exception if disconnected, forbidden chars
@@ -259,6 +259,7 @@ namespace ClickEnglish {
                 throw new Exception($"Method: SaveSettings. Cannot save user settings.\n\n{e.Message}");
             }
         }
+        #endregion
 
         //Returns number of words
         public int CountDictionary(int user_id) {
@@ -280,13 +281,23 @@ namespace ClickEnglish {
             }
         }
 
+        #region DictionaryManager
         //Download whole dictionary for explicit user
         //True if downloaded correctly
         //False if empty
         public bool TakeDictionary(int actualUserId, out DataSet dictionaryData) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"SELECT * FROM dictionary WHERE user_id = {actualUserId}";
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {actualUserId}";
             var queryResult = Query(query);
             if(queryResult.Tables.Count == 0) {
                 throw new Exception($"Method: TakeDictionary. There is no tables in return.");
@@ -299,6 +310,7 @@ namespace ClickEnglish {
                 return true;
             }
         }
+        #endregion
 
         //Download whole categories table for explicit user
         //True if downloaded correctly
