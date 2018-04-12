@@ -64,44 +64,58 @@ namespace ClickEnglish
 
         private void RandomVocabSet_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var gameWindow = new MainGameBoard();
             gameWindow.Show();
+            this.IsEnabled = true;
         }
 
         private void ParticularCategory_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var gameWindow = new MainGameBoard();
             gameWindow.Show();
+            this.IsEnabled = true;
         }
 
         private void TimeChallange_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var gameWindow = new MainGameBoard();
             gameWindow.Show();
+            this.IsEnabled = true;
         }
 
         private void WholeDictionary_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var gameWindow = new MainGameBoard();
             gameWindow.Show();
+            this.IsEnabled = true;
         }
 
         private void EditDictionary_Click(object sender, RoutedEventArgs e)
         {
-            var dictionaryManager = new DictionaryManager();
+            this.IsEnabled = false;
+            var dictionaryManager = new DictionaryManager(_manager);
             dictionaryManager.Show();
+            this.IsEnabled = true;
         }
 
         private void EditCategories_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var categoryManager = new CategoryManager();
             categoryManager.Show();
+            this.IsEnabled = true;
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
+            this.IsEnabled = false;
             var aboutWindow = new About();
             aboutWindow.Show();
+            this.IsEnabled = true;
         }
 
         #endregion

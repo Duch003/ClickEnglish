@@ -35,7 +35,7 @@
 			<ComboBoxItem Content="Particular category"/>
 		</ComboBox>
 
-		<DataGrid Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10">
+		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10" AddingNewItem="AddNewRecord" BeginningEdit="EditRecord_Begin" CellEditEnding="EditRecord_End">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Polish word" MinWidth="150"/>
 				<DataGridTextColumn Header="English word" MinWidth="150"/>
