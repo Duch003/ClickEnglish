@@ -83,6 +83,8 @@ namespace ClickEnglish {
             return hash.Aggregate("", (current, z) => current + $"{z}");
         }
 
+        //Return true of contains forbidden chars
+        //Flase if string clear
         internal bool Validate(string nick) {
             //Checking length of nickname and password
             if(string.IsNullOrEmpty(nick)) {
@@ -301,6 +303,69 @@ namespace ClickEnglish {
             var queryResult = Query(query);
             if(queryResult.Tables.Count == 0) {
                 throw new Exception($"Method: TakeDictionary. There is no tables in return.");
+            }
+            if(queryResult.Tables[0].Rows.Count == 0) {
+                dictionaryData = null;
+                return false;
+            } else {
+                dictionaryData = queryResult;
+                return true;
+            }
+        }
+
+        //Filter method
+        //True if downloaded correctly
+        //Flase if empty
+        //Exception if forbidden chars
+        public bool TakeDictionary_WordCondition(int actualUserId, out DataSet dictionaryData, string word) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(word))
+                throw new Exception("Method: TakeDictionary_WordCondition. Some arguments are null or empty or contains forbidden signs.");
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {actualUserId}" +
+                $"AND (dictionary.pl LIKE %{word}% OR dictionary.eng LIKE %{word}%";
+            var queryResult = Query(query);
+            if(queryResult.Tables.Count == 0) {
+                throw new Exception($"Method: TakeDictionary_WoedCondition. There is no tables in return.");
+            }
+            if(queryResult.Tables[0].Rows.Count == 0) {
+                dictionaryData = null;
+                return false;
+            } else {
+                dictionaryData = queryResult;
+                return true;
+            }
+        }
+
+        //Filter method
+        //True if downloaded correctly
+        //Flase if empty
+        public bool TakeDictionary_CategoryCondition(int actualUserId, out DataSet dictionaryData, Category category) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {actualUserId}" +
+                $"AND categories.id = {category.Id}";
+            var queryResult = Query(query);
+            if(queryResult.Tables.Count == 0) {
+                throw new Exception($"Method: TakeDictionary_CategoryCondition. There is no tables in return.");
             }
             if(queryResult.Tables[0].Rows.Count == 0) {
                 dictionaryData = null;

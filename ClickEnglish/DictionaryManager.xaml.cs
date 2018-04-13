@@ -21,14 +21,19 @@ namespace ClickEnglish {
     public partial class DictionaryManager : Window {
         private DatabaseManager _manager;
         public ObservableCollection<Question> Data;
+        public ObservableCollection<Category> TempCategory;
+        public ObservableCollection<Question> TempData;
         public ObservableCollection<Category> Category;
 
         public DictionaryManager(DatabaseManager manager) {
             InitializeComponent();
             _manager = manager;
             var result = manager.TakeDictionary(GlobalSettings.ID, out var dictionaryData);
-            if(result)
+            if(result) {
                 LoadDictionary(dictionaryData);
+                TempData = Data;
+                TempCategory = Category;
+            }
         }
 
         private bool LoadDictionary(DataSet raw)
@@ -59,6 +64,7 @@ namespace ClickEnglish {
             dgDictionary.DataContext = Data;
             dgDictionary.ItemsSource = Data;
             cbCategories.ItemsSource = Category;
+            
             return true;
         }
 
@@ -76,12 +82,18 @@ namespace ClickEnglish {
 
         private void Category_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if(string.IsNullOrEmpty((sender as TextBox).Text) && TempData != null) {
+                Data = TempData;
+                return;
+            }
+            var result = _manager.TakeDictionary_WordCondition(GlobalSettings.ID, out var temp, (sender as TextBox).Text);
+
 
         }
 
         private void Searcher_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            
         }
 
         private void AddWord_Click(object sender, RoutedEventArgs e)
