@@ -31,11 +31,9 @@ namespace ClickEnglish
 
         private void OpenSettings()
         {
-            this.IsEnabled = false;
             var temp = new Settings(_manager);
             //temp.DialogFinished += new EventHandler<WindowEventArgs>(Settings_DialogFinished);
             temp.ShowDialog();
-            this.IsEnabled = true;
         }
 
         private void OpenLogInScreen()

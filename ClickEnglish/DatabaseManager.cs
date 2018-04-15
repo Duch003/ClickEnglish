@@ -332,7 +332,7 @@ namespace ClickEnglish {
                 $"FROM dictionary " +
                 $"INNER JOIN categories ON dictionary.category_id = categories.id " +
                 $"WHERE dictionary.user_id = {actualUserId}" +
-                $"AND (dictionary.pl LIKE %{word}% OR dictionary.eng LIKE %{word}%";
+                $" AND (dictionary.pl LIKE '%{word}%' OR dictionary.eng LIKE '%{word}%');";
             var queryResult = Query(query);
             if(queryResult.Tables.Count == 0) {
                 throw new Exception($"Method: TakeDictionary_WoedCondition. There is no tables in return.");
@@ -346,44 +346,13 @@ namespace ClickEnglish {
             }
         }
 
-        //Filter method
-        //True if downloaded correctly
-        //Flase if empty
-        public bool TakeDictionary_CategoryCondition(int actualUserId, out DataSet dictionaryData, Category category) {
-            if(!_connected)
-                throw new Exception("Connection with server is closed.");
-            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
-                $"dictionary.eng, " +               //[0][1] ENG
-                $"dictionary.pl, " +                //[0][2] PL
-                $"dictionary.percentage, " +        //[0][3] %
-                $"dictionary.image, " +             //[0][4] IMG
-                $"categories.category_name, " +     //[0][5] CATEGORY
-                $"categories.id " +                 //[0][6] CATEGORY ID
-                $"FROM dictionary " +
-                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
-                $"WHERE dictionary.user_id = {actualUserId}" +
-                $"AND categories.id = {category.Id}";
-            var queryResult = Query(query);
-            if(queryResult.Tables.Count == 0) {
-                throw new Exception($"Method: TakeDictionary_CategoryCondition. There is no tables in return.");
-            }
-            if(queryResult.Tables[0].Rows.Count == 0) {
-                dictionaryData = null;
-                return false;
-            } else {
-                dictionaryData = queryResult;
-                return true;
-            }
-        }
-        #endregion
-
         //Download whole categories table for explicit user
         //True if downloaded correctly
         //False if empty
         public bool TakeCategories(int actualUserId, out DataSet categoriesData) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"SELECT * FROM categories WHERE user_id = {actualUserId}";
+            var query = $"SELECT id, category_name FROM categories WHERE user_id = {actualUserId}";
             var queryResult = Query(query);
             if(queryResult.Tables.Count == 0) {
                 throw new Exception($"Method: TakeCategories. There is no tables in return.");
@@ -396,5 +365,48 @@ namespace ClickEnglish {
                 return true;
             }
         }
+
+        #region Manage dictionary records
+        public bool AddNewRecord(int actualUserId, Question newWord)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(newWord.ImgSrc) || Validate(newWord.WordPl) || Validate(newWord.WordEng))
+                return false;
+            var query = $"INSERT INTO dictionary VALUES (DEFAULT, '{newWord.WordEng}', '{newWord.WordPl}', {newWord.Percentage}, '{newWord.ImgSrc}', {newWord.Cat.Id}, {actualUserId})";
+            NonQuery(query);
+            return true;
+        }
+
+        public bool UpdateRecord(Question updatedWord)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(updatedWord.ImgSrc) || Validate(updatedWord.WordPl) || Validate(updatedWord.WordEng))
+                return false;
+            var query = $"UPDATE dictionary SET " +
+                $"eng = '{updatedWord.WordEng}', " +
+                $"pl = '{updatedWord.WordPl}', " +
+                $"percentage = {updatedWord.Percentage}, " +
+                $"image = '{updatedWord.ImgSrc}', " +
+                $"category_id = {updatedWord.Cat.Id}" +
+                $"WHERE id = {updatedWord.ID}";
+                
+            NonQuery(query);
+            return true;
+        }
+
+        public bool RemoveRecord(int ID)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"DELETE FROM dictionary WHERE id = {ID}";
+            NonQuery(query);
+            return true;
+        }
+        #endregion
+
+
+        #endregion
     }
 }

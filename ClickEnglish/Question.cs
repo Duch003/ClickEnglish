@@ -8,20 +8,21 @@ namespace ClickEnglish
 {
     public class Question
     {
-        public int ID { get; private set; }
-        public string WordEng { get; private set; }
-        public string WordPl { get; private set; }
-        public Category Category { get; private set; }
-        public int Repeats { get; private set; }
-        public double Percentage { get; private set; }
-        public string ImgSrc { get; private set; }
+        public int ID { get; set; }
+        public string WordEng { get; set; }
+        public string WordPl { get; set; }
+        public Category Cat { get; set; }
+        public int Repeats { get; set; }
+        public double Percentage { get; set; }
+        public string ImgSrc { get; set; }
 
         public Question(int id, string eng, string pl, Category cat, double percent, string img)
         {
+            ID = id;
             Repeats = 3;
             WordPl = pl;
             WordEng = eng;
-            Category = cat;
+            Cat = cat;
             Percentage = Math.Round(percent * 100, 2);
             ImgSrc = img;
         }
@@ -44,15 +45,5 @@ namespace ClickEnglish
         }
     }
 
-    public class Category
-    {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
 
-        public Category(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
-    }
 }

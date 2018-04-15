@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d"
-        Title="DictionaryManager" Height="500" Width="800">
+        Title="DictionaryManager" Height="600" Width="800">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -20,9 +20,9 @@
 	</Window.Background>
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
@@ -30,36 +30,46 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 
-		<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" Text="Searcher" TextChanged="Searcher_TextChanged"/>
-		<ComboBox x:Name="cbCategories" Grid.Row="0" Grid.Column="1" SelectedIndex="0" Margin="5" DisplayMemberPath="Name" SelectionChanged="Category_SelectionChanged"/>
+		
 
-		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="LightBlue"
-				  Margin="10" AddingNewItem="AddNewRecord" BeginningEdit="EditRecord_Begin" CellEditEnding="EditRecord_End">
+		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
+				  Margin="10" CellEditEnding="EditRecord_End" DataContext="{Binding Data}">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="130"/>
-				<DataGridTextColumn Header="English word" Binding="{Binding WordEng}" MinWidth="130"/>
-				<DataGridTextColumn Header="Category" Binding="{Binding Category.Name}" MinWidth="100"/>
-				<DataGridTextColumn Header="Difficulty [%]" Binding="{Binding Percentage}" MinWidth="50"/>
-				<DataGridHyperlinkColumn Header="Picture" Binding="{Binding ImgSrc}" MinWidth="100"/>
+				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="250"/>
+				<DataGridTextColumn Header="English word" Binding="{Binding WordEng}" MinWidth="250"/>
+				<DataGridComboBoxColumn x:Name ="dgcbCategory" Header="Category"   
+										DisplayMemberPath="{Binding Name}" SelectedItemBinding="{Binding Cat.Name}"
+										 MinWidth="100">
+					<DataGridComboBoxColumn.ElementStyle>
+							<Style>
+								<Setter Property="ComboBox.ItemsSource" Value="{Binding Path=CategoryList.Name}"/>
+							</Style>
+						</DataGridComboBoxColumn.ElementStyle>
+					<DataGridComboBoxColumn.EditingElementStyle>
+						<Style>
+							<Setter Property="ComboBox.ItemsSource" Value="{Binding Path=CategoryList.Name}"/>
+						</Style>
+					</DataGridComboBoxColumn.EditingElementStyle>
+				</DataGridComboBoxColumn>
+				<DataGridTextColumn Header="Difficulty" Binding="{Binding Percentage, StringFormat={}{0}%}" MinWidth="50"/>
+				<DataGridTextColumn Header="Picture" Binding="{Binding ImgSrc}" MinWidth="100"/>
+				
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
+		<WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+			<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" TextChanged="Searcher_TextChanged" MinWidth="255" MaxHeight="40"/>
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="AddWord_Click">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Add word" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Add new" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="EditWord_Click">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Edit word" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-			</Button>
+			
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="RemoveWord_Click">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove selected" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="ExitWithoutSaving_Click">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit without saving" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Exit_Click">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="ExitSavingChanges_Click">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit saving changes" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-			</Button>
-		</StackPanel>
+			
+		</WrapPanel>
 	</Grid>
 </Window>
