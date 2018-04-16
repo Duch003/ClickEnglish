@@ -43,6 +43,7 @@ namespace ClickEnglish
                 LoadCategories(categoryData);
         }
 
+        //Load categories used by user
         private bool LoadCategories(DataSet raw)
         {
             if(raw is null)
@@ -64,6 +65,7 @@ namespace ClickEnglish
             return true;
         }
 
+        //Parse DataSet to Collection of Questions
         private bool LoadDictionary(DataSet raw)
         {
             if(raw == null)
@@ -104,7 +106,6 @@ namespace ClickEnglish
                     case "English word":
                         newRecord.WordEng = change;
                         break;
-                    
                     case "Difficulty":
                         newRecord.Percentage = Convert.ToDouble(change.Replace("%","")) / 100;
                         break;

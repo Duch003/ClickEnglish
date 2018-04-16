@@ -146,6 +146,7 @@ namespace ClickEnglish_IntegrationTests
         }
         #endregion
 
+        #region DictionaryManager
         [TestCase(1, 3, true)]
         [TestCase(2, 5, true)]
         [TestCase(3, 5, true)]
@@ -161,5 +162,37 @@ namespace ClickEnglish_IntegrationTests
             else
                 Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
         }
+
+        [TestCase()]
+        public void TakeDictionary_WordCondition_InnerLogicTest(int id, string condition, int expectedCount, bool expectedResult) {
+            testManager.Connect();
+            bool result = testManager.TakeDictionary_WordCondition(id, out DataSet temp, condition);
+            if(temp == null)
+                Assert.IsTrue(result == expectedResult);
+            else
+                Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
+        }
+
+        public void TakeDictionary_WordCondition_ThrowException(int id, string condition, int expectedCount, bool expectedResult) {
+            testManager.Connect();
+            Assert.Throws<Exception>(() => testManager.TakeDictionary_WordCondition(id, out DataSet temp, condition));
+        }
+
+        public void TakeCategories_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+
+        }
+
+        public void AddNewRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+
+        }
+
+        public void UpdateRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+
+        }
+
+        public void RemoveRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+
+        }
+        #endregion
     }
 }
