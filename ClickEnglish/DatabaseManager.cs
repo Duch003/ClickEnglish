@@ -150,6 +150,40 @@ namespace ClickEnglish {
                 throw new Exception($"Method: RestoreDatabase_USERS.\n\n{e.Message}");
             }
         }
+
+        public bool RestoreDatabase_DICTIONARY()
+        {
+            Connect();
+            try {
+                NonQuery("TRUNCATE dictionary RESTART IDENTITY");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'testeng', 'test', 1, 'image1', 6, 3);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test1eng', 'test1', 0.2, 'image1', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test2eng', 'test2', 0.32,'image2', 2, 2);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test3eng', 'test3', 0.7,'image1', 3, 3);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test4eng', 'test4', 1,'image3', 7, 4);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test5eng', 'test5', 0.67,'image3', 2, 2);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test6eng', 'test6', 0.98,'image3', 1, 1);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test7eng', 'test7', 0.01,'image4', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test8eng', 'test8', 0.11,'image2', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test9eng', 'test9', 0.45,'image1', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test10eng', 'test10', 1,'image4', 4, 4);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test11eng', 'test11', 0,'image3', 2, 2);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test12eng', 'test12', 0.14,'image4', 3, 3);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test13eng', 'test13', 0.56,'image4', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test14eng', 'test14', 0.91,'image2', 1, 1);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test15eng', 'test15', 1,'image2', 1, 1);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test16eng', 'test16', 0.62,'image1', 2, 2);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test17eng', 'test17', 0.88,'image3', 3, 3);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test18eng', 'test18', 0.19,'image1', 2, 2);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test19eng', 'test19', 0.73,'image4', 4, 4);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test20eng', 'test20', 0.44,'image5', 3, 3);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test21eng', 'test21', 0.88,'image2', 5, 5);");
+                NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test22eng', 'test22', 0,'image3', 4, 4);");
+                return true;
+            } catch(Exception e) {
+                throw new Exception($"Method: RestoreDatabase_USERS.\n\n{e.Message}");
+            }    
+        }
         #endregion
 
         #region Settings and accounts
@@ -358,7 +392,7 @@ namespace ClickEnglish {
                 throw new Exception($"Method: TakeCategories. There is no tables in return.");
             }
             if(queryResult.Tables[0].Rows.Count == 0) {
-                categoriesData = null;
+                categoriesData = queryResult;
                 return false;
             } else {
                 categoriesData = queryResult;
@@ -367,12 +401,14 @@ namespace ClickEnglish {
         }
 
         #region Manage dictionary records
+        //True if successfull
+        //Exception if forbidden signs
         public bool AddNewRecord(int actualUserId, Question newWord)
         {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            if(Validate(newWord.ImgSrc) || Validate(newWord.WordPl) || Validate(newWord.WordEng))
-                return false;
+            if(Validate(newWord.ImgSrc) || Validate(newWord.WordPl) || Validate(newWord.WordEng) || Validate(newWord.Cat.Name))
+                throw new Exception("Method: AddNewRecord. Some arguments are null or empty or contains forbidden signs.");
             var query = $"INSERT INTO dictionary VALUES (DEFAULT, '{newWord.WordEng}', '{newWord.WordPl}', {newWord.Percentage}, '{newWord.ImgSrc}', {newWord.Cat.Id}, {actualUserId})";
             NonQuery(query);
             return true;
@@ -383,7 +419,7 @@ namespace ClickEnglish {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
             if(Validate(updatedWord.ImgSrc) || Validate(updatedWord.WordPl) || Validate(updatedWord.WordEng))
-                return false;
+                throw new Exception("Method: UpdateRecord. Some arguments are null or empty or contains forbidden signs.");
             var query = $"UPDATE dictionary SET " +
                 $"eng = '{updatedWord.WordEng}', " +
                 $"pl = '{updatedWord.WordPl}', " +

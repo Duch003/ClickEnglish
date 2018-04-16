@@ -141,6 +141,7 @@ namespace ClickEnglish_IntegrationTests
         public void CountDictionary_ReturnWordsById(byte id, byte expected)
         {
             testManager.Connect();
+            testManager.RestoreDatabase_DICTIONARY();
             var result = testManager.CountDictionary(id);
             Assert.IsTrue(result == expected);
         }
@@ -156,6 +157,7 @@ namespace ClickEnglish_IntegrationTests
         public void TakeDictionary_InnerLogicTest(int id, int expectedCount, bool expectedResult)
         {
             testManager.Connect();
+            testManager.RestoreDatabase_DICTIONARY();
             bool result = testManager.TakeDictionary(id, out DataSet temp);
             if (temp == null)
                 Assert.IsTrue(result == expectedResult);
@@ -163,7 +165,12 @@ namespace ClickEnglish_IntegrationTests
                 Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
         }
 
-        [TestCase()]
+        [TestCase(1, "14", 1, true)]
+        [TestCase(1, "word", 0, false)]
+        [TestCase(2, "test", 5, true)]
+        [TestCase(5, "1", 3, true)]
+        [TestCase(4, "cos", 0, false)]
+        [TestCase(6, "test", 0, false)]
         public void TakeDictionary_WordCondition_InnerLogicTest(int id, string condition, int expectedCount, bool expectedResult) {
             testManager.Connect();
             bool result = testManager.TakeDictionary_WordCondition(id, out DataSet temp, condition);
@@ -173,25 +180,76 @@ namespace ClickEnglish_IntegrationTests
                 Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
         }
 
-        public void TakeDictionary_WordCondition_ThrowException(int id, string condition, int expectedCount, bool expectedResult) {
+        [TestCase(1, "'")]
+        [TestCase(2, "Te@t")]
+        [TestCase(3, "^$%")]
+        [TestCase(4, "")]
+        [TestCase(5, "test%%")]
+        public void TakeDictionary_WordCondition_ThrowException(int id, string condition) {
             testManager.Connect();
             Assert.Throws<Exception>(() => testManager.TakeDictionary_WordCondition(id, out DataSet temp, condition));
         }
 
+        [TestCase(1, 1, true)]
+        [TestCase(2, 1, true)]
+        [TestCase(3, 2, true)]
+        [TestCase(4, 2, true)]
+        [TestCase(5, 1, true)]
+        [TestCase(6, 0, false)]
         public void TakeCategories_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+            testManager.Connect();
+            bool result = testManager.TakeCategories(id, out DataSet temp);
+            if(temp == null)
+                Assert.IsTrue(result == expectedResult);
+            else
+                Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
 
         }
-
-        public void AddNewRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
-
+        
+        [TestCase(7, true)]
+        [TestCase(8, true)]
+        [TestCase(9, true)]
+        public void AddNewRecord_InnerLogicTest(int id, bool expectedResult) {
+            testManager.Connect();
+            Question temp = new Question(0, "first", "pierwszy", new Category(0, "myCategory"), 50, "test");
+            bool result = testManager.AddNewRecord(id, temp);
+            Assert.IsTrue(result == expectedResult);
         }
 
-        public void UpdateRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+        [Test]
+        public void AddNewRecord_ThrowsException()
+        {
+            testManager.Connect();
+            Question temp = new Question(0, " ", "^!$#", new Category(0, "myCategory"), 50, "test");
+            Question temp2 = new Question(0, "First", "Pierwszy", new Category(0, "%$#@"), 50, "test");
 
+            Assert.Throws<Exception>(() => testManager.AddNewRecord(7, temp));
+            Assert.Throws<Exception>(() => testManager.AddNewRecord(7, temp2));
+        }
+
+        [Test]
+        public void UpdateRecord_InnerLogicTest() {
+            testManager.Connect();
+            var original = new Question(23, "test22eng", "test22", new Category(4, "Important"), 0, "image3");
+            var changed = new Question(23, "correct", "poprawny", new Category(7, "Cooking"), 70, "test");
+            bool result = testManager.UpdateRecord(changed);
+            Assert.IsTrue(result);
+            testManager.UpdateRecord(original);
+        }
+
+        [Test]
+        public void UpdateRecord_ThrowsException()
+        {
+            testManager.Connect();
+            var temp = new Question(23, " ", "%$@", new Category(4, "Important"), 0, "image3");
+            Assert.Throws<Exception>(() => testManager.UpdateRecord(temp));
         }
 
         public void RemoveRecord_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
-
+            testManager.Connect();
+            var result = testManager.RemoveRecord(13);
+            Assert.IsTrue(expectedResult == result);
+            testManager.RestoreDatabase_USERS();
         }
         #endregion
     }
