@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d"
-       Title="CategoryManager" Height="500" Width="500">
+       Title="CategoryManager" Height="500" Width="520">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -21,37 +21,31 @@
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<DataGrid Grid.Row="0" Grid.RowSpan="3" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10">
+		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="ID" Width="50"/>
 				<DataGridTextColumn Header="Category Name"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<StackPanel Grid.Row="0" Grid.RowSpan="3" Grid.Column="2" VerticalAlignment="Center">
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Add category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+		<WrapPanel Grid.Row="1" Grid.Column="0">
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Add_Click">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Add" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Rename category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Remove_Click">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove selected" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove category" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
+
+			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Exit_Click">
+				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit without saving" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-			</Button>
-			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20">
-				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit saving changes" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
-			</Button>
-		</StackPanel>
+		</WrapPanel>
 	</Grid>
 </Window>

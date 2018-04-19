@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,27 @@ namespace ClickEnglish
     /// </summary>
     public partial class CategoryManager : Window
     {
-        public CategoryManager()
+        private DatabaseManager _manager;
+        public ObservableCollection<Category> Data { get; set; }
+
+        public CategoryManager(DatabaseManager manager)
         {
             InitializeComponent();
+            _manager = manager;
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void Remove_Click(object sender, RoutedEventArgs e) {
+
+
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e) {
+
+
         }
     }
 }

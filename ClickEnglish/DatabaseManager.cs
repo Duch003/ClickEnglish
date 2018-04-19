@@ -380,25 +380,7 @@ namespace ClickEnglish {
             }
         }
 
-        //Download whole categories table for explicit user
-        //True if downloaded correctly
-        //False if empty
-        public bool TakeCategories(int actualUserId, out DataSet categoriesData) {
-            if(!_connected)
-                throw new Exception("Connection with server is closed.");
-            var query = $"SELECT id, category_name FROM categories WHERE user_id = {actualUserId}";
-            var queryResult = Query(query);
-            if(queryResult.Tables.Count == 0) {
-                throw new Exception($"Method: TakeCategories. There is no tables in return.");
-            }
-            if(queryResult.Tables[0].Rows.Count == 0) {
-                categoriesData = queryResult;
-                return false;
-            } else {
-                categoriesData = queryResult;
-                return true;
-            }
-        }
+        
 
         #region Manage dictionary records
         //True if successfull
@@ -444,5 +426,62 @@ namespace ClickEnglish {
 
 
         #endregion
+
+        #region CategoryManager
+        //Download whole categories table for explicit user
+        //True if downloaded correctly
+        //False if empty
+        public bool TakeCategories(int actualUserId, out DataSet categoriesData) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT id, category_name FROM categories WHERE user_id = {actualUserId}";
+            var queryResult = Query(query);
+            if(queryResult.Tables.Count == 0) {
+                throw new Exception($"Method: TakeCategories. There is no tables in return.");
+            }
+            if(queryResult.Tables[0].Rows.Count == 0) {
+                categoriesData = queryResult;
+                return false;
+            } else {
+                categoriesData = queryResult;
+                return true;
+            }
+        }
+        #endregion
+
+        #region Manager categories records
+        //True if successfull
+        //Exception if forbidden signs
+        public bool AddNewCategory(int actualUserId, Category newCategory) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(newCategory.Name))
+                throw new Exception("Method: AddNewCategory. Some arguments are null or empty or contains forbidden signs.");
+            var query = $"INSERT INTO categories VALUES (DEFAULT, '{newCategory.Name}', {actualUserId})";
+            NonQuery(query);
+            return true;
+        }
+
+        public bool UpdateCategory(Category updatedCategory) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(updatedCategory.Name))
+                throw new Exception("Method: UpdateCategory. Some arguments are null or empty or contains forbidden signs.");
+            var query = $"UPDATE dictionary SET " +
+                $"category_name = '{updatedCategory.Name}'" +
+                $"WHERE id = {updatedCategory.Id}";
+            NonQuery(query);
+            return true;
+        }
+
+        public bool RemoveCategory(int ID) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"DELETE FROM category WHERE id = {ID}";
+            NonQuery(query);
+            return true;
+        }
+        #endregion
+
     }
 }
