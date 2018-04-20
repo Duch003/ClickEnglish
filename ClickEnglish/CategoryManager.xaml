@@ -27,10 +27,9 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="False" AlternatingRowBackground="Red" Margin="10">
+		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="False" Margin="10" CellEditEnding="EditCategory_End">
 			<DataGrid.Columns>
-				<DataGridTextColumn Header="ID" Width="50"/>
-				<DataGridTextColumn Header="Category Name"/>
+				<DataGridTextColumn Header="Category Name" Binding="{Binding Name}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
