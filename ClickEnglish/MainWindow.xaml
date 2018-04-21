@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d" Padding="10" ResizeMode="NoResize" Icon="icons/MainWindow_MainIcon.png"
         Title="ClickEnglish!" Height="500" Width="700">
+	
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -13,6 +14,7 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
+	
 	<Window.Background>
 		<ImageBrush ImageSource="background/EnglishFlag_Background.jpg"/>
 	</Window.Background>

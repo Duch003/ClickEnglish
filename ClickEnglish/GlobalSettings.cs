@@ -8,20 +8,9 @@ namespace ClickEnglish
 {
     public static class GlobalSettings
     {
-        //State of sounds
-        //False - disabled
-        private static bool _soundState;          
-        public static bool SoundState
-        {
-            get
-            {
-                return _soundState;
-            }
-            set
-            {
-                _soundState = value;
-            }
-        }
+        public static bool SoundState { get; set; }
+        public static int ID { get; set; }
+
         //Time for time challange
         //Min: 1 min., max 15 min.
         private static int _time;                 
@@ -54,19 +43,6 @@ namespace ClickEnglish
                     _rndVocabularySize = value;
                 else
                     _rndVocabularySize = 15;
-            }
-        }
-        //Id of logged user
-        private static int _myId;                 
-        public static int ID
-        {
-            get
-            {
-                return _myId;
-            }
-            set
-            {
-                _myId = value;
             }
         }
     }

@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
-        mc:Ignorable="d"
-        Title="About" Height="300" Width="300">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="About" Height="600" Width="600">
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -18,16 +18,18 @@
 		<ImageBrush ImageSource="background/About_Background.jpg"/>
 	</Window.Background>
 
-	<StackPanel>
-		<TextBlock Style="{StaticResource TextBlock_TileStyle}" Margin="71,10" Height="212.284">
-			<StackPanel>
-				<TextBlock Style="{StaticResource TextBlock_Header}" Text="My Dictionary App" FontSize="15" Height="41.25"/>
-				<TextBlock Style="{StaticResource TextBlock_Description}" Text="By Tomasz Mankin (programmer)" Height="33.13" TextWrapping="WrapWithOverflow" Width="130.302"/>
-				<TextBlock Style="{StaticResource TextBlock_Header}" Text="Special Thanks to" FontSize="15" Height="38.017"/>
-				<TextBlock Style="{StaticResource TextBlock_Description}" Text="Ewelina Paluszak   (for keeping eye on design)" Height="51.234" TextWrapping="WrapWithOverflow" Width="130.948"/>
+	<StackPanel KeyDown="KeyboardKey_Click">
+		<TextBlock Style="{StaticResource TextBlock_TileStyle}" Margin="150, 10" Height="510" Width="Auto">
+			<StackPanel HorizontalAlignment="Center" Width="285">
+				<TextBlock Style="{StaticResource TextBlock_Header}" Text="Click English" FontSize="30" Height="41" Margin="10,5" Width="Auto"/>
+				<TextBlock Style="{StaticResource TextBlock_Description}" Text="By Duch003 (programmer)" FontSize="18" 
+						   Height="57" TextWrapping="WrapWithOverflow" Width="130.302" Margin="77,5"/>
+				<TextBlock Style="{StaticResource TextBlock_Header}" Text="Special Thanks for" FontSize="25" Height="38" Margin="10,5" Width="Auto"/>
+				<TextBlock Style="{StaticResource TextBlock_Description}" Text="Ewelina Paluszak (for keeping eye on design)" 
+						   FontSize="18" Height="144" TextWrapping="WrapWithOverflow" Width="Auto" Margin="10,5"/>
 			</StackPanel>
 		</TextBlock>
-		<Button Style="{StaticResource Button_TileStyle}" Height="27" FontFamily="Kristen ITC" FontSize="18">
+		<Button Style="{StaticResource Button_TileStyle}" Height="27" FontFamily="Kristen ITC" FontSize="18" Click="Exit_Click">
 			<TextBlock Text="Exit" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
 		</Button>
 	</StackPanel>

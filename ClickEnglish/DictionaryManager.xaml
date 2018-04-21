@@ -18,6 +18,7 @@
 	<Window.Background>
 		<ImageBrush ImageSource="background/DictionaryManager_Background.jpeg"/>
 	</Window.Background>
+	
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
@@ -29,15 +30,17 @@
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
-
+		<!--Datagrid with dictionary-->
 		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
 				  Margin="10" CellEditEnding="EditRecord_End" DataContext="{Binding Data}">
 			<DataGrid.Columns>
+				<!--Polish word-->
 				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="250"/>
+				<!--English word-->
 				<DataGridTextColumn Header="English word" Binding="{Binding WordEng}" MinWidth="250"/>
-				<DataGridComboBoxColumn x:Name ="dgcbCategory" Header="Category"   
-										DisplayMemberPath="{Binding Name}" SelectedItemBinding="{Binding Cat.Name}"
-										 MinWidth="100">
+				<!--Category-->
+				<DataGridComboBoxColumn x:Name ="dgcbCategory" Header="Category" DisplayMemberPath="{Binding Name}" SelectedItemBinding="{Binding Cat.Name}" MinWidth="100">
+					<!--Special setting for binding - because normal binding doesnt word-->
 					<DataGridComboBoxColumn.ElementStyle>
 							<Style>
 								<Setter Property="ComboBox.ItemsSource" Value="{Binding Path=CategoryList.Name}"/>
@@ -49,25 +52,29 @@
 						</Style>
 					</DataGridComboBoxColumn.EditingElementStyle>
 				</DataGridComboBoxColumn>
+				<!--Difficulty-->
 				<DataGridTextColumn Header="Difficulty" Binding="{Binding Percentage, StringFormat={}{0}%}" MinWidth="50"/>
+				<!--Image-->
 				<DataGridTextColumn Header="Picture" Binding="{Binding ImgSrc}" MinWidth="100"/>
-				
 			</DataGrid.Columns>
 		</DataGrid>
 
+		<!--Buttons and searcher-->
 		<WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+			<!--Searcher-->
 			<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" TextChanged="Searcher_TextChanged" MinWidth="255" MaxHeight="40"/>
+			<!--Add new word-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="AddWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Add new" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			
+			<!--Remove-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="RemoveWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove selected" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
+			<!--Exit-->
 			<Button  Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Exit_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-			
 		</WrapPanel>
 	</Grid>
 </Window>

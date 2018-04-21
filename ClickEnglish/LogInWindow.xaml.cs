@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ClickEnglish
 {
@@ -30,7 +20,6 @@ namespace ClickEnglish
                 _manager.Connect();
             }
             catch (Exception e)
-
             {
                 MessageBox.Show(e.Message, "Connection error.", MessageBoxButton.OK, MessageBoxImage.Error);
                 Environment.Exit(-1);
@@ -43,6 +32,10 @@ namespace ClickEnglish
             if (!_manager.IsConnected())
             {
                 MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            if(string.IsNullOrEmpty(txtUser.Text) || string.IsNullOrEmpty(txtPassword.Password)) {
+                MessageBox.Show("Your login and/or password are empty. Please fill fields correctly.", "Can't register new user.", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             //True if exists
@@ -65,12 +58,17 @@ namespace ClickEnglish
         //SINGING IN
         private void SignIn_Click(object sender, RoutedEventArgs e)
         {
-            if (!_manager.IsConnected())
-            {
+            if(!_manager.IsConnected()) {
                 MessageBox.Show("Cannot connect to server", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+
+            }
+            if(string.IsNullOrEmpty(txtUser.Text) || string.IsNullOrEmpty(txtPassword.Password)) {
+                MessageBox.Show("Your login and/or password are empty. Please fill fields correctly.", "Can't log in.", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
             DataSet temp;
+            
             if (_manager.TryToLogIn(txtUser.Text, txtPassword.Password, out temp) && temp != null && temp.Tables.Count >= 1)
             {
                 GlobalSettings.ID = Convert.ToInt32(temp.Tables[0].Rows[0][0]);
@@ -81,6 +79,18 @@ namespace ClickEnglish
                 return;
             }
             MessageBox.Show("Invalid user or password.", "Cannot sing in.", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void KeyboardKey_Click(object sender, KeyEventArgs e)
+        {
+            switch(e.Key) {
+                case Key.Enter:
+                    SignIn_Click(null, null);
+                    break;
+                case Key.Escape:
+                    Environment.Exit(2);
+                    break;
+            }
         }
     }
 }

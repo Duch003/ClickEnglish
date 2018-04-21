@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
-        mc:Ignorable="d"
-       Title="CategoryManager" Height="500" Width="520">
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+       Title="CategoryManager" Height="500" Width="530">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -27,21 +27,24 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
+		<!--Datagrid with categories-->
 		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="False" Margin="10" CellEditEnding="EditCategory_End">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Category Name" Binding="{Binding Name}"/>
 			</DataGrid.Columns>
 		</DataGrid>
 
-		<WrapPanel Grid.Row="1" Grid.Column="0">
+		<!--Buttons-->
+		<WrapPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+			<!--Add new category-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Add_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Add" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-
+			<!--Remove caegory-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Remove_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Remove selected" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>
-
+			<!--Exit-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Exit_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Exit" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
 			</Button>

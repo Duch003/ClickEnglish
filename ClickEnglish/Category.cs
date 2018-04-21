@@ -8,12 +8,12 @@ namespace ClickEnglish
 {
     public class Category
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
         public Category(int id, string name)
         {
-            Id = id;
+            ID = id;
             Name = name;
         }
     }

@@ -23,5 +23,20 @@ namespace ClickEnglish
         {
             InitializeComponent();
         }
+
+        private void Exit()
+        {
+            this.Close();
+        }
+
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Exit();
+        }
+
+        private void KeyboardKey_Click(object sender, KeyEventArgs e)
+        {
+            Exit();
+        }
     }
 }

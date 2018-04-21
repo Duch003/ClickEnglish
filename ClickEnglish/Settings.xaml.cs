@@ -19,13 +19,9 @@ namespace ClickEnglish
     /// </summary>
     public partial class Settings : Window
     {
-        //private byte TEMP_rndVocabSize;
-        //private bool TEMP_soundState;
-        //private uint TEMP_time;
         private DatabaseManager _manager;
         public Settings(DatabaseManager manager)
         {
-            //TODO Dopisać ograniczniki sliderów
             InitializeComponent();
             _manager = manager;
             VocabularySlider.Value  = GlobalSettings.RandomVocabulaySize;
@@ -33,6 +29,7 @@ namespace ClickEnglish
             tglSoundState.IsChecked = GlobalSettings.SoundState;
         }
 
+        #region Events
         private void Settings_Apply(object sender, RoutedEventArgs e)
         {
             if(_manager.IsConnected())
@@ -48,9 +45,7 @@ namespace ClickEnglish
                 MessageBox.Show("Database is disconnected.", "Cannot save settings.", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private void Settings_Cancel(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void Settings_Cancel(object sender, RoutedEventArgs e) => this.Close();
+        #endregion
     }
 }

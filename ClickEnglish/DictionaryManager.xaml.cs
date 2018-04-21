@@ -22,13 +22,9 @@ namespace ClickEnglish
     public partial class DictionaryManager : Window
     {
         private DatabaseManager _manager;
-
-        public ObservableCollection<Question> Data { get; set; } //Actual container for data, filled always with data with actual text criteria
-
-        private List<Category> CategoryList;                     //Actual list of categories
-        public ObservableCollection<string> CategoryStringList { get; set; } //Simplified list of categories, cause of Bindings in DG doesnt work normally
-        
-        private bool _needRestoration = false;
+        public ObservableCollection<Question> Data { get; set; } 
+        private List<Category> CategoryList;                     
+        public ObservableCollection<string> CategoryStringList { get; set; } 
 
         public DictionaryManager(DatabaseManager manager)
         {
@@ -43,6 +39,7 @@ namespace ClickEnglish
                 LoadCategories(categoryData);
         }
 
+        #region Methods
         //Load categories used by user
         private bool LoadCategories(DataSet raw)
         {
@@ -91,6 +88,7 @@ namespace ClickEnglish
             dgDictionary.ItemsSource = Data;
             return true;
         }
+        #endregion
 
         #region Events
         private void EditRecord_End(object sender, DataGridCellEditEndingEventArgs e)
@@ -120,9 +118,7 @@ namespace ClickEnglish
                                    where z.Name == change
                                    select z;
                 newRecord.Cat = tempCategory == null ? CategoryList.First() : tempCategory.First();
-
             }
-            
             _manager.UpdateRecord(newRecord);
             var result = _manager.TakeDictionary(GlobalSettings.ID, out var dictionaryData);
             if(result) {

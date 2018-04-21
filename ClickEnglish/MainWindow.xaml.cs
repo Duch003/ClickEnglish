@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace ClickEnglish
 {
@@ -26,16 +13,12 @@ namespace ClickEnglish
         {
             InitializeComponent();
             _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
-            OpenLogInScreen();
+            do {
+                OpenLogInScreen();
+            } while(GlobalSettings.ID == 0);
         }
 
-        private void OpenSettings()
-        {
-            var temp = new Settings(_manager);
-            //temp.DialogFinished += new EventHandler<WindowEventArgs>(Settings_DialogFinished);
-            temp.ShowDialog();
-        }
-
+        #region Methods
         private void OpenLogInScreen()
         {
             this.IsEnabled = false;
@@ -44,21 +27,41 @@ namespace ClickEnglish
             this.IsEnabled = true;
         }
 
-        //private void Settings_DialogFinished(object sender, WindowEventArgs e)
-        //{
-        //    _soundState = e.SoundState;
-        //    _time = e.Time;
-        //    _rndVocabularySize = e.RndVocabularySize;
-        //}
-
-        #region Events
-
-        private void Settings_Click(object sender, RoutedEventArgs e)
+        private void OpenSettings()
         {
             this.IsEnabled = false;
-            OpenSettings();
+            var temp = new Settings(_manager);
+            temp.ShowDialog();
             this.IsEnabled = true;
         }
+
+        private void OpenAbout()
+        {
+            this.IsEnabled = false;
+            var temp = new About();
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
+
+        private void OpenDictionaryManager()
+        {
+            this.IsEnabled = false;
+            var temp = new DictionaryManager(_manager);
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
+
+        private void OpenCategoryManager()
+        {
+            this.IsEnabled = false;
+            var temp = new CategoryManager(_manager);
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
+        #endregion
+
+        #region Events
+        private void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
 
         private void RandomVocabSet_Click(object sender, RoutedEventArgs e)
         {
@@ -92,30 +95,11 @@ namespace ClickEnglish
             this.IsEnabled = true;
         }
 
-        private void EditDictionary_Click(object sender, RoutedEventArgs e)
-        {
-            this.IsEnabled = false;
-            var dictionaryManager = new DictionaryManager(_manager);
-            dictionaryManager.Show();
-            this.IsEnabled = true;
-        }
+        private void EditDictionary_Click(object sender, RoutedEventArgs e) => OpenDictionaryManager();
 
-        private void EditCategories_Click(object sender, RoutedEventArgs e)
-        {
-            this.IsEnabled = false;
-            var categoryManager = new CategoryManager();
-            categoryManager.Show();
-            this.IsEnabled = true;
-        }
+        private void EditCategories_Click(object sender, RoutedEventArgs e) => OpenCategoryManager();
 
-        private void About_Click(object sender, RoutedEventArgs e)
-        {
-            this.IsEnabled = false;
-            var aboutWindow = new About();
-            aboutWindow.Show();
-            this.IsEnabled = true;
-        }
-
+        private void About_Click(object sender, RoutedEventArgs e) => OpenAbout();
         #endregion
     }
 }

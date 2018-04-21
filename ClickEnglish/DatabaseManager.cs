@@ -1,23 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Security.RightsManagement;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using Npgsql;
 
 
-namespace ClickEnglish {
-    //TODO Czy uczynik ta klase statyczna? I polaczaczyc z GlobalSettings?
+namespace ClickEnglish
+{
     public class DatabaseManager {
-        //Static clause make variables shared via all intances of this class
         private static NpgsqlConnection _connect;
         private static string _connString;
         private static bool _connected;
 
+        /// <summary>
+        /// Converts arguments into one connection string
+        /// </summary>
+        /// <param name="server">Server name</param>
+        /// <param name="user">User name</param>
+        /// <param name="password">Password</param>
+        /// <param name="port">Port</param>
+        /// <param name="dbName">Database name</param>
         public DatabaseManager(string server, string user, string password, string port, string dbName) {
             _connected = false;
             if(server == null || user == null || password == null || port == null || dbName == null)
@@ -26,30 +29,43 @@ namespace ClickEnglish {
             _connString = connString;
         }
 
-        public DatabaseManager() { }
-
         #region Connection
+        /// <summary>
+        /// Set connection with database based on connection string
+        /// </summary>
         public void Connect() {
             if(_connString == null)
-                throw new Exception("Cannot connect to database.");
+                throw new Exception("Method: Connect. Cannot connect to database.");
             _connect = new NpgsqlConnection(_connString);
             _connect.Open();
             _connected = true;
         }
 
+        /// <summary>
+        /// Disconnect from database
+        /// </summary>
         public void Disconnect() {
             if(!_connected)
-                throw new Exception("Connection with server is closed.");
+                throw new Exception("Method: Disconnect. Connection with server is closed.");
             _connect.Close();
             _connected = false;
         }
 
+        /// <summary>
+        /// Returns actual connection state
+        /// </summary>
+        /// <returns>True if connected, false if not</returns>
         public bool IsConnected() {
             return _connected;
         }
         #endregion
 
         #region Queries
+        /// <summary>
+        /// Method that execute query
+        /// </summary>
+        /// <param name="myQuery">String with full query</param>
+        /// <returns>Query result converted to DataSet</returns>
         internal DataSet Query(string myQuery) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
@@ -59,6 +75,10 @@ namespace ClickEnglish {
             return dataSet;
         }
 
+        /// <summary>
+        /// Method that execute nonquery
+        /// </summary>
+        /// <param name="myQuery">String with full query</param>
         internal void NonQuery(string myQuery) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
@@ -69,10 +89,14 @@ namespace ClickEnglish {
                 throw new Exception($"Method: NonQuery.\n\n{e.Message}");
             }
         }
-
         #endregion
 
         #region Validation and filtering
+        /// <summary>
+        /// Method that encrypt argument with SHA256
+        /// </summary>
+        /// <param name="arg">Any string</param>
+        /// <returns>Hashed string, Exception if argument null or empty</returns>
         internal string HashString(string arg) {
             if(string.IsNullOrEmpty(arg))
                 throw new Exception("Method: HashString. Input argument were empty.");
@@ -83,21 +107,26 @@ namespace ClickEnglish {
             return hash.Aggregate("", (current, z) => current + $"{z}");
         }
 
-        //Return true of contains forbidden chars
-        //Flase if string clear
-        internal bool Validate(string nick) {
-            //Checking length of nickname and password
-            if(string.IsNullOrEmpty(nick)) {
+        /// <summary>
+        /// Check argument whether contains forbidden chars or is null or empty
+        /// </summary>
+        /// <param name="arg">Any srtring</param>
+        /// <returns>True if contains forbidden chars or null or empty, false if string clear</returns>
+        internal bool Validate(string arg) {
+            if(string.IsNullOrEmpty(arg)) {
                 return true;
             }
-            //Checking if nickname or password contains forbidden characters
-            if(Filter(nick)) {
+            if(Filter(arg)) {
                 return true;
             }
             return false;
         }
 
-        //Anwser the question: Does input string contains any of forbidden chars?
+        /// <summary>
+        /// Check whether argument contains forbidden chars
+        /// </summary>
+        /// <param name="raw">Any string</param>
+        /// <returns>True if contains forbidden chars, false if not</returns>
         internal bool Filter(string raw) {
             if(string.IsNullOrEmpty(raw))
                 return true;
@@ -182,14 +211,60 @@ namespace ClickEnglish {
                 return true;
             } catch(Exception e) {
                 throw new Exception($"Method: RestoreDatabase_USERS.\n\n{e.Message}");
-            }    
+            }
+        }
+
+        //True if succedeed
+        //False if user doesnt exists
+        //Exception if disconnected, forbidden chars
+        /// <summary>
+        /// Delete user from database
+        /// </summary>
+        /// <param name="nick">User to delete</param>
+        /// <param name="password">Password</param>
+        /// <returns>True if successfull, false if failed, exception id disconnected, contains forbidden chars or null or empty argument</returns>
+        public bool DeleteUser(string nick, string password)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            if(Validate(nick) || Validate(password))
+                throw new Exception("Method: Register new user. Some arguments are null or empty or contains forbidden signs.");
+            if(IsUserAlreadyExists(nick)) {
+                var hashedPassword = HashString(password);
+                NonQuery($"DELETE FROM users WHERE user_name = '{nick}' AND user_password = '{hashedPassword}'");
+                return true;
+            }
+            return false;
+        }
+
+        //Returns number of words
+        public int CountDictionary(int user_id)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT count(id) FROM dictionary WHERE user_id = {user_id}";
+            var queryResult = Query(query);
+
+
+            if(queryResult.Tables.Count == 0) {
+                throw new Exception($"Method: CountDictionary. There is no tables in return.");
+            }
+            if(queryResult.Tables[0].Rows.Count == 0) {
+                return 0;
+            } else {
+                if(Int32.TryParse(queryResult.Tables[0].Rows[0][0].ToString(), out int counter))
+                    return counter;
+                return 0;
+            }
         }
         #endregion
 
-        #region Settings and accounts
-        //True if exists
-        //Flase if not
-        //Exception if disconnected, forbidden chars
+        #region Login and Register
+        /// <summary>
+        /// Check whether user exists in database
+        /// </summary>
+        /// <param name="nick">Nick to check</param>
+        /// <returns>True if exists, false if not, exception if disconnected or contains forbidden chars</returns>
         public bool IsUserAlreadyExists(string nick) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
@@ -202,7 +277,7 @@ namespace ClickEnglish {
             if(queryResult.Tables[0].Rows.Count == 0)
                 return false;
             else if(queryResult.Tables[0].Rows.Count == 1) {
-                var tempUser = queryResult.Tables[0].Rows[0][0].ToString(); //User
+                var tempUser = queryResult.Tables[0].Rows[0][0].ToString(); //User Row
 
                 if(tempUser.Equals(nick))
                     return true;
@@ -210,9 +285,13 @@ namespace ClickEnglish {
             return false;
         }
 
-        //True if successfull
-        //False if user does'nt exists
-        //Exception if disconnected, forbidden chars
+        /// <summary>
+        /// Method that load user data from database
+        /// </summary>
+        /// <param name="nick">User nick</param>
+        /// <param name="password">Password</param>
+        /// <param name="userData">DataSet to be filled with user data</param>
+        /// <returns>True if successfull, false if not, exception if disconnected, contains forbidden chars, null or empty</returns>
         public bool TryToLogIn(string nick, string password, out DataSet userData) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
@@ -262,23 +341,9 @@ namespace ClickEnglish {
                 throw new Exception($"Method: RegisterNewUser. An error occured during register process.\n\n{e.Message}");
             }
         }
+        #endregion
 
-        //True if succedeed
-        //False if user doesnt exists
-        //Exception if disconnected, forbidden chars
-        public bool DeleteUser(string nick, string password) {
-            if(!_connected)
-                throw new Exception("Connection with server is closed.");
-            if(Validate(nick) || Validate(password))
-                throw new Exception("Method: Register new user. Some arguments are null or empty or contains forbidden signs.");
-            if(IsUserAlreadyExists(nick)) {
-                var hashedPassword = HashString(password);
-                NonQuery($"DELETE FROM users WHERE user_name = '{nick}' AND user_password = '{hashedPassword}'");
-                return true;
-            }
-            return false;
-        }
-
+        #region Settings
         //True if successeded
         public bool SaveSettings() {
             if(!_connected)
@@ -296,26 +361,6 @@ namespace ClickEnglish {
             }
         }
         #endregion
-
-        //Returns number of words
-        public int CountDictionary(int user_id) {
-            if(!_connected)
-                throw new Exception("Connection with server is closed.");
-            var query = $"SELECT count(id) FROM dictionary WHERE user_id = {user_id}";
-            var queryResult = Query(query);
-
-
-            if(queryResult.Tables.Count == 0) {
-                throw new Exception($"Method: CountDictionary. There is no tables in return.");
-            }
-            if(queryResult.Tables[0].Rows.Count == 0) {
-                return 0;
-            } else {
-                if(Int32.TryParse(queryResult.Tables[0].Rows[0][0].ToString(), out int counter))
-                    return counter;
-                return 0;
-            }
-        }
 
         #region DictionaryManager
         //Download whole dictionary for explicit user
@@ -380,9 +425,6 @@ namespace ClickEnglish {
             }
         }
 
-        
-
-        #region Manage dictionary records
         //True if successfull
         //Exception if forbidden signs
         public bool AddNewRecord(int actualUserId, Question newWord)
@@ -391,7 +433,7 @@ namespace ClickEnglish {
                 throw new Exception("Connection with server is closed.");
             if(Validate(newWord.ImgSrc) || Validate(newWord.WordPl) || Validate(newWord.WordEng) || Validate(newWord.Cat.Name))
                 throw new Exception("Method: AddNewRecord. Some arguments are null or empty or contains forbidden signs.");
-            var query = $"INSERT INTO dictionary VALUES (DEFAULT, '{newWord.WordEng}', '{newWord.WordPl}', {newWord.Percentage}, '{newWord.ImgSrc}', {newWord.Cat.Id}, {actualUserId})";
+            var query = $"INSERT INTO dictionary VALUES (DEFAULT, '{newWord.WordEng}', '{newWord.WordPl}', {newWord.Percentage}, '{newWord.ImgSrc}', {newWord.Cat.ID}, {actualUserId})";
             NonQuery(query);
             return true;
         }
@@ -407,7 +449,7 @@ namespace ClickEnglish {
                 $"pl = '{updatedWord.WordPl}', " +
                 $"percentage = {updatedWord.Percentage}, " +
                 $"image = '{updatedWord.ImgSrc}', " +
-                $"category_id = {updatedWord.Cat.Id}" +
+                $"category_id = {updatedWord.Cat.ID}" +
                 $"WHERE id = {updatedWord.ID}";
                 
             NonQuery(query);
@@ -422,9 +464,6 @@ namespace ClickEnglish {
             NonQuery(query);
             return true;
         }
-        #endregion
-
-
         #endregion
 
         #region CategoryManager
@@ -447,9 +486,7 @@ namespace ClickEnglish {
                 return true;
             }
         }
-        #endregion
 
-        #region Manager categories records
         //True if successfull
         //Exception if forbidden signs
         public bool AddNewCategory(int actualUserId, Category newCategory) {
@@ -467,9 +504,9 @@ namespace ClickEnglish {
                 throw new Exception("Connection with server is closed.");
             if(Validate(updatedCategory.Name))
                 throw new Exception("Method: UpdateCategory. Some arguments are null or empty or contains forbidden signs.");
-            var query = $"UPDATE dictionary SET " +
+            var query = $"UPDATE categories SET " +
                 $"category_name = '{updatedCategory.Name}'" +
-                $"WHERE id = {updatedCategory.Id}";
+                $"WHERE id = {updatedCategory.ID}";
             NonQuery(query);
             return true;
         }
@@ -477,7 +514,7 @@ namespace ClickEnglish {
         public bool RemoveCategory(int ID) {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"DELETE FROM category WHERE id = {ID}";
+            var query = $"DELETE FROM categories WHERE id = {ID}";
             NonQuery(query);
             return true;
         }
