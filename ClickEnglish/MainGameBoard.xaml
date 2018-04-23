@@ -39,38 +39,36 @@
 			<ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
 
-
 		<!--Timer-->
-		<TextBlock Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Time"/>
+		<TextBlock x:Name="tbTimer" Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Time"/>
 
 		<!--Upper Block-->
-		<TextBlock Grid.Row="1" Grid.Column="3" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Text="Questions goes here" FontSize="30" TextWrapping="Wrap" TextAlignment="Center" Padding="0 40 0 0"/>
+		<TextBlock x:Name="tbAsk" Grid.Row="1" Grid.Column="3" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Text="Questions goes here" FontSize="30" TextWrapping="Wrap" TextAlignment="Center" Padding="0 40 0 0"/>
 
 		<!--Pseudo-margin-->
 		<TextBlock Grid.Row="2" Grid.Column="0" Height="10"/>
 
 		<!--Bottom anwser block-->
-		<TextBox Grid.Row="3" Grid.Column="3" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Background="DarkBlue" Opacity="0.7" Text="Anwsers goes here" FontSize="30" Foreground="White" TextAlignment="Center" Padding="0 40 0 0"/>
+		<TextBox x:Name="txtAnwser" Grid.Row="3" Grid.Column="3" Width="Auto" Grid.ColumnSpan="3" Height="Auto" Background="DarkBlue" Opacity="0.7" Text="Anwsers goes here" FontSize="30" Foreground="White" TextAlignment="Center" Padding="0 40 0 0"/>
 
 		<!--Image block-->
 		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderThickness="8">
-			<Image  Source="background/default_picture.jpg" Stretch="Fill"/>
+			<Image x:Name="imgHint" Source="background/default_picture.jpg" Stretch="Fill"/>
 		</Border>
 
 		<!--Buttons-->
 		<!--<Button Grid.Row="4" Grid.Column="3" Content="OK" Style="{StaticResource Button_TileStyle}" Width="Auto" MinHeight="60" Height="Auto" Margin="7"/>-->
 		<Border Style="{StaticResource Border_WhiteFrame}" Grid.Row="4" Grid.Column="4" Grid.ColumnSpan="2" BorderThickness="5" Width="Auto" Height="60">
-			<Button  Content="Good anwser in case of failure" Style="{StaticResource Button_TileStyle}" Width="Auto" Height="60" Background="DarkBlue" Opacity="0.9"/>
+			<Button x:Name="btnCheck" Content="Good anwser in case of failure" Style="{StaticResource Button_TileStyle}" Width="Auto" Height="60" Background="DarkBlue" Opacity="0.9" Click="Check_Click"/>
 		</Border>
 
-
 		<!--Points-->
-		<TextBlock Grid.Row="1" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Margin="5" Background="DarkBlue" Text="Word repeats remaining"/>
+		<TextBlock x:Name="tbRepeats" Grid.Row="1" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Margin="5" Background="DarkBlue" Text="Word repeats remaining"/>
 
-		<TextBlock Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Words Counter (how much waiting)"/>
+		<TextBlock x:Name="tbCounter" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Words Counter (how much waiting)"/>
 
-		<TextBlock Grid.Row="3" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Passed sentences"/>
+		<TextBlock x:Name="tbPass" Grid.Row="3" Grid.Column="6" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Passed sentences" Margin="5"/>
 
-		<TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Category" Background="DarkBlue"/>
+		<TextBlock x:Name="tbCategory" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Style="{StaticResource TextBlock_TileStyle}" Width="Auto" Height="60" Text="Category" Background="DarkBlue"/>
 	</Grid>
 </Window>

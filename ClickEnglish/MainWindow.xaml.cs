@@ -58,6 +58,11 @@ namespace ClickEnglish
             temp.ShowDialog();
             this.IsEnabled = true;
         }
+
+        private void ParticularCategory()
+        {
+
+        }
         #endregion
 
         #region Events

@@ -520,5 +520,52 @@ namespace ClickEnglish
         }
         #endregion
 
+        #region Games
+        public bool GameSet_ParticularCategory(int userId, int categoryId, out DataSet questions)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE category_id = {categoryId} AND user_id = {userId}";
+            var result = Query(query);
+            if(result.Tables[0].Rows.Count == 0) {
+                questions = null;
+                return false;
+            } else {
+                questions = result;
+                return true;
+            }
+        }
+
+        public bool GameSet_WholeDictionary(int userId, out DataSet questions)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE AND user_id = {userId}";
+            var result = Query(query);
+            if(result.Tables[0].Rows.Count == 0) {
+                questions = null;
+                return false;
+            } else {
+                questions = result;
+                return true;
+            }
+        }
+
+        public bool GameSet_RandomVocabulary(int userId, int size, out DataSet questions)
+        {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE AND user_id = {userId} LIMIT {size}";
+            var result = Query(query);
+            if(result.Tables[0].Rows.Count == 0) {
+                questions = null;
+                return false;
+            } else {
+                questions = result;
+                return true;
+            }
+        }
+        #endregion
+
     }
 }
