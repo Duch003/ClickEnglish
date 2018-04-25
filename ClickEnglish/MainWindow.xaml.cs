@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Data;
+using System.Windows;
 
 namespace ClickEnglish
 {
@@ -61,9 +63,34 @@ namespace ClickEnglish
 
         private void ParticularCategory()
         {
+            this.IsEnabled = false;
 
         }
         #endregion
+
+        private bool ConvertToList(DataSet raw, out List<Question> processed)
+        {
+            if(raw is null) {
+                processed = null;
+                return false;
+            }
+
+            if(raw.Tables[0].Rows.Count == 0) {
+                processed = null;
+                return false;
+            }
+
+            processed = new List<Question>();
+            for(int i = 0; i < raw.Tables[0].Rows.Count; i++) {
+                var eng = raw.Tables[0].Rows[i][0].ToString();
+                var pl = raw.Tables[0].Rows[i][1].ToString();
+                var percentage = raw.Tables[0].Rows[i][2].ToString();
+                var img = raw.Tables[0].Rows[i][3].ToString();
+
+                processed.Add(new Question)
+            }
+                
+        }
 
         #region Events
         private void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
@@ -71,6 +98,7 @@ namespace ClickEnglish
         private void RandomVocabSet_Click(object sender, RoutedEventArgs e)
         {
             this.IsEnabled = false;
+
             var gameWindow = new MainGameBoard();
             gameWindow.Show();
             this.IsEnabled = true;

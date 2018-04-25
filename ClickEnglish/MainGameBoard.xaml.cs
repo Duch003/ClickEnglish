@@ -21,9 +21,10 @@ namespace ClickEnglish
     /// </summary>
     public partial class MainGameBoard : Window
     {
-        List<Question> Questions;
-        TimeSpan Time;
-        DispatcherTimer Timer;
+        private List<Question> Questions;
+        private TimeSpan Time;
+        private DispatcherTimer Timer;
+        private int Passed;
 
         public MainGameBoard(List<Question> question, bool time)
         {
@@ -41,6 +42,7 @@ namespace ClickEnglish
                 Time = new TimeSpan(0, 0, 0);
                 Timer.Tick += Timer_TickIncrement;
             }
+            Passed = Questions.Count;
             Timer.Start();
         }
         private void Timer_TickIncrement(object sender, EventArgs e) {
@@ -59,7 +61,7 @@ namespace ClickEnglish
         //Losowanie z dostarczonej puli za każdym razem z możliwością powtórki
         private void Ask()
         {
-            //Drawing question
+            //Draw question
             Random rnd;
             Question current;
             do {
@@ -75,7 +77,7 @@ namespace ClickEnglish
                     break;
             } while(true);
 
-            //Drawing which one to ask
+            //Draw which one to ask
             if(rnd.Next(0, 1) == 1) {
                 tbAsk.Text = current.WordEng;
             } else {
@@ -95,7 +97,13 @@ namespace ClickEnglish
                 postfix = " times";
             else
                 postfix = " time";
-            tbRepeats.Text = current.Repeats + postfix; 
+            tbRepeats.Text = current.Repeats + postfix;
+
+            tbCounter.Text = Questions.Count + " questions to ask";
+
+            tbPass.Text = (Questions.Count - Passed) + " passed";
+
+            tbCategory.Text = current.Cat.Name;
         }
 
         private int Draw()
