@@ -39,16 +39,17 @@
 		<!--Random set Button-->
 		<Button Grid.Row="1" Grid.Column="1" Style="{StaticResource Button_TileStyle}" Click="RandomVocabSet_Click" >
 			<DockPanel>
-				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Random Vocab Set</TextBlock>
-				<Image Source="icons/MainWindow_RandomVocabularySet.png"></Image>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}" Margin="0,5" Width="Auto" Height="60">Random Vocab Set</TextBlock>
+				<Image Source="icons/MainWindow_RandomVocabularySet.png"/>
 			</DockPanel>
 		</Button>
 
 		<!--Particular category-->
 		<Button Grid.Row="2" Grid.Column="1" Style="{StaticResource Button_TileStyle}" Click="ParticularCategory_Click">
 			<DockPanel>
-				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}">Particular Category</TextBlock>
-				<Image Source="icons/MainWindow_Categories.png"></Image>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}" FontSize="20" Height="50" Margin="5">Particular Category</TextBlock>
+				<ListBox DockPanel.Dock="Top" Height="18" Margin="5" x:Name="lbCategories"></ListBox>
+				<Image Source="icons/MainWindow_Categories.png" Margin="3"></Image>
 			</DockPanel>
 		</Button>
 

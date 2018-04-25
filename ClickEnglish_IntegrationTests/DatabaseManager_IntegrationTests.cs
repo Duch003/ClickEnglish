@@ -190,21 +190,7 @@ namespace ClickEnglish_IntegrationTests
             Assert.Throws<Exception>(() => testManager.TakeDictionary_WordCondition(id, out DataSet temp, condition));
         }
 
-        [TestCase(1, 1, true)]
-        [TestCase(2, 1, true)]
-        [TestCase(3, 2, true)]
-        [TestCase(4, 2, true)]
-        [TestCase(5, 1, true)]
-        [TestCase(6, 0, false)]
-        public void TakeCategories_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
-            testManager.Connect();
-            bool result = testManager.TakeCategories(id, out DataSet temp);
-            if(temp == null)
-                Assert.IsTrue(result == expectedResult);
-            else
-                Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
-
-        }
+        
         
         [TestCase(7, true)]
         [TestCase(8, true)]
@@ -252,5 +238,61 @@ namespace ClickEnglish_IntegrationTests
             testManager.RestoreDatabase_USERS();
         }
         #endregion
+
+        [TestCase(1, 1, true)]
+        [TestCase(2, 1, true)]
+        [TestCase(3, 2, true)]
+        [TestCase(4, 2, true)]
+        [TestCase(5, 1, true)]
+        [TestCase(6, 0, false)]
+        public void TakeCategories_InnerLogicTest(int id, int expectedCount, bool expectedResult) {
+            testManager.Connect();
+            bool result = testManager.TakeCategories(id, out DataSet temp);
+            if(temp == null)
+                Assert.IsTrue(result == expectedResult);
+            else
+                Assert.IsTrue(temp.Tables[0].Rows.Count == expectedCount && result == expectedResult);
+        }
+
+        [Test]
+        public void AddNewCategory_InnerLogicTest() {
+            testManager.Connect();
+            var result = testManager.AddNewCategory(8, new Category(0, "TestCategory"));
+            var count = testManager.CountCategories();
+
+            Assert.IsTrue(result && (8 == count)); //t && 8 == count
+            testManager.RestoreDatabase_CATEGORIES();
+        }
+
+        [Test]
+        public void AddNewCategory_ThrowException() {
+            testManager.Connect();
+            Assert.Throws<Exception>(() => testManager.AddNewCategory(8, new Category(0, "$%%^")));
+        }
+
+        [Test]
+        public void UpdateCategory_InnerLogicTest() {
+            testManager.Connect();
+            var result = testManager.UpdateCategory(new Category(1, "Test"));
+
+            Assert.IsTrue(result);
+            testManager.RestoreDatabase_CATEGORIES();
+        }
+
+        [Test]
+        public void UpdateCategory_ThrowException() {
+            testManager.Connect();
+            Assert.Throws<Exception>(() => testManager.UpdateCategory(new Category(0, "$%%^")));
+            testManager.RestoreDatabase_CATEGORIES();
+        }
+
+        [Test]
+        public void RemoveCategory_InnerLogicTest() {
+            testManager.Connect();
+            var result = testManager.UpdateCategory(new Category(1, "Test"));
+
+            Assert.IsTrue(result);
+            testManager.RestoreDatabase_CATEGORIES();
+        }
     }
 }

@@ -210,13 +210,28 @@ namespace ClickEnglish
                 NonQuery("INSERT INTO dictionary VALUES(DEFAULT, 'test22eng', 'test22', 0,'image3', 4, 4);");
                 return true;
             } catch(Exception e) {
-                throw new Exception($"Method: RestoreDatabase_USERS.\n\n{e.Message}");
+                throw new Exception($"Method: RestoreDatabase_DICTIONARY.\n\n{e.Message}");
             }
         }
 
-        //True if succedeed
-        //False if user doesnt exists
-        //Exception if disconnected, forbidden chars
+        public bool RestoreDatabase_CATEGORIES() {
+            Connect();
+            try {
+                NonQuery("TRUNCATE categories RESTART IDENTITY");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Nature', 1);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Technology', 2);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Event', 3);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Important', 4);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Calendar', 5);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Calendar', 3);");
+                NonQuery("INSERT INTO categories VALUES(DEFAULT, 'Cooking', 4);");
+                return true;
+
+            } catch(Exception e) {
+                throw new Exception($"Method: RestoreDatabase_CATEGORIES.\n\n{e.Message}");
+            }
+        }
+
         /// <summary>
         /// Delete user from database
         /// </summary>
@@ -392,6 +407,36 @@ namespace ClickEnglish
             }
         }
 
+        //Download whole dictionary for explicit user
+        //True if downloaded correctly
+        //False if empty
+        public bool TakeDictionary(int actualUserId, out DataSet dictionaryData, int limit) {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {actualUserId}" +
+                $"LIMIT {limit};";
+            var queryResult = Query(query);
+            if(queryResult.Tables.Count == 0) {
+                throw new Exception($"Method: TakeDictionary. There is no tables in return.");
+            }
+            if(queryResult.Tables[0].Rows.Count == 0) {
+                dictionaryData = null;
+                return false;
+            } else {
+                dictionaryData = queryResult;
+                return true;
+            }
+        }
+
         //Filter method
         //True if downloaded correctly
         //Flase if empty
@@ -487,6 +532,14 @@ namespace ClickEnglish
             }
         }
 
+        public int CountCategories() {
+            if(!_connected)
+                throw new Exception("Connection with server is closed.");
+            var result = Query("SELECT count(id) FROM categories;");
+            return Convert.ToInt32(result.Tables[0].Rows[0][0]);
+            
+        }
+
         //True if successfull
         //Exception if forbidden signs
         public bool AddNewCategory(int actualUserId, Category newCategory) {
@@ -525,7 +578,16 @@ namespace ClickEnglish
         {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE category_id = {categoryId} AND user_id = {userId}";
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                 $"dictionary.eng, " +               //[0][1] ENG
+                 $"dictionary.pl, " +                //[0][2] PL
+                 $"dictionary.percentage, " +        //[0][3] %
+                 $"dictionary.image, " +             //[0][4] IMG
+                 $"categories.category_name, " +     //[0][5] CATEGORY
+                 $"categories.id " +                 //[0][6] CATEGORY ID
+                 $"FROM dictionary " +
+                 $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                 $"WHERE dictionary.user_id = {userId} AND categories.id = {categoryId};";
             var result = Query(query);
             if(result.Tables[0].Rows.Count == 0) {
                 questions = null;
@@ -540,7 +602,16 @@ namespace ClickEnglish
         {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE AND user_id = {userId}";
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {userId};";
             var result = Query(query);
             if(result.Tables[0].Rows.Count == 0) {
                 questions = null;
@@ -555,7 +626,18 @@ namespace ClickEnglish
         {
             if(!_connected)
                 throw new Exception("Connection with server is closed.");
-            var query = $"SELECT eng, pl, percentage, image FROM dictionary WHERE AND user_id = {userId} LIMIT {size}";
+            var query = $"SELECT dictionary.id, " + //[0][0] WORD ID
+                $"dictionary.eng, " +               //[0][1] ENG
+                $"dictionary.pl, " +                //[0][2] PL
+                $"dictionary.percentage, " +        //[0][3] %
+                $"dictionary.image, " +             //[0][4] IMG
+                $"categories.category_name, " +     //[0][5] CATEGORY
+                $"categories.id " +                 //[0][6] CATEGORY ID
+                $"FROM dictionary " +
+                $"INNER JOIN categories ON dictionary.category_id = categories.id " +
+                $"WHERE dictionary.user_id = {userId}" +
+                $"ORDER BY dictionary.percentage ASC" +
+                $"LIMIT {size};";
             var result = Query(query);
             if(result.Tables[0].Rows.Count == 0) {
                 questions = null;
