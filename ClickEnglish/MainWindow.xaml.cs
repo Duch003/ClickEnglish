@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Windows;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace ClickEnglish
 {
@@ -18,6 +19,16 @@ namespace ClickEnglish
         public MainWindow()
         {
             InitializeComponent();
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.FileName = "Image"; // Default file name
+            dlg.DefaultExt = ".bmp"; // Default file extension
+            dlg.Filter = "JPEG (.jpeg)|*.jpeg;*.jpg" +
+                "|TIFF (.tiff)|*.tiff" +
+                "|BMP (.bmp)|*.bmp" +
+                "|GIF (.gif)|*.gif" +
+                "|PNG (.png)|*.png" +
+                "|JPG (.jpg)|*.jpg"; // Filter files by extension SVG, SVGZ
+            dlg.ShowDialog();
             _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
             do {
                 OpenLogInScreen();
@@ -25,7 +36,7 @@ namespace ClickEnglish
             var result = _manager.TakeCategories(GlobalSettings.ID, out var temp);
             if(result) {
                 ConvertCategories(temp);
-                lbCategories.ItemsSource = Categories;
+                //lbCategories.ItemsSource = Categories;
             } else
                 throw new Exception("Method: MainWindow. Cannot assign categories to MainWindow.");
         }

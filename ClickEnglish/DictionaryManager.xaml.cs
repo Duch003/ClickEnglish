@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -169,5 +170,21 @@ namespace ClickEnglish
             this.Close();
         }
         #endregion
+
+        private void EditBegin_SpecialPicturesHandler(object sender, DataGridBeginningEditEventArgs e) {
+            if(e.Column.Header.ToString() != "Picture") {
+                return;
+            }
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.FileName = "Image"; // Default file name
+            dlg.DefaultExt = ".bmp"; // Default file extension
+            dlg.Filter = "JPEG (.jpeg)|*.jpeg;*.jpg" +
+                "|TIFF (.tiff)|*.tiff" +
+                "|BMP (.bmp)|*.bmp" +
+                "|GIF (.gif)|*.gif" +
+                "|PNG (.png)|*.png" +
+                "|JPG (.jpg)|*.jpg"; // Filter files by extension
+
+        }
     }
 }

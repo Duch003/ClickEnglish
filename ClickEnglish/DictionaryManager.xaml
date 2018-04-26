@@ -32,7 +32,7 @@
 		</Grid.ColumnDefinitions>
 		<!--Datagrid with dictionary-->
 		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
-				  Margin="10" CellEditEnding="EditRecord_End" DataContext="{Binding Data}">
+				  Margin="10" CellEditEnding="EditRecord_End" DataContext="{Binding Data}" BeginningEdit="EditBegin_SpecialPicturesHandler" >
 			<DataGrid.Columns>
 				<!--Polish word-->
 				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="250"/>
