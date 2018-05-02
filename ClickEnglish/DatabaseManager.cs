@@ -495,7 +495,7 @@ namespace ClickEnglish
                 $"percentage = {updatedWord.Percentage}, " +
                 $"image = '{updatedWord.ImgSrc}', " +
                 $"category_id = {updatedWord.Cat.ID}" +
-                $"WHERE id = {updatedWord.ID}";
+                $" WHERE id = {updatedWord.ID}";
                 
             NonQuery(query);
             return true;

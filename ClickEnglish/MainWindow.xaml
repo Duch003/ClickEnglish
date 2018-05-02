@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d" Padding="10" ResizeMode="NoResize" Icon="icons/MainWindow_MainIcon.png"
         Title="ClickEnglish!" Height="500" Width="700">
-	
+
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -14,7 +14,7 @@
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
 	</Window.Resources>
-	
+
 	<Window.Background>
 		<ImageBrush ImageSource="background/EnglishFlag_Background.jpg"/>
 	</Window.Background>
@@ -47,9 +47,10 @@
 		<!--Particular category-->
 		<Button Grid.Row="2" Grid.Column="1" Style="{StaticResource Button_TileStyle}" Click="ParticularCategory_Click">
 			<DockPanel>
-				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}" FontSize="20" Height="50" Margin="5">Particular Category</TextBlock>
-				<ListBox DockPanel.Dock="Top" Height="18" Margin="5" x:Name="lbCategories"></ListBox>
-				<Image Source="icons/MainWindow_Categories.png" Margin="3"></Image>
+				<TextBlock DockPanel.Dock="Top" Style="{StaticResource TextBlock_Header}" FontSize="20" Height="29" Margin="10,5">Category</TextBlock>
+				<ListBox DockPanel.Dock="Top" Height="24" Margin="3" x:Name="lbCategories"></ListBox>
+				<Image Source="icons/MainWindow_Categories.png" Margin="0,7,0,10" Width="132" ></Image>
+				<!--Margin="3,20,3,3"-->
 			</DockPanel>
 		</Button>
 

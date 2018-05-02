@@ -25,7 +25,9 @@ namespace ClickEnglish
         private DatabaseManager _manager;
         public ObservableCollection<Question> Data { get; set; } 
         private List<Category> CategoryList;                     
-        public ObservableCollection<string> CategoryStringList { get; set; } 
+        public ObservableCollection<string> CategoryStringList { get; set; }
+
+        string temp;
 
         public DictionaryManager(DatabaseManager manager)
         {
@@ -109,8 +111,8 @@ namespace ClickEnglish
                         newRecord.Percentage = Convert.ToDouble(change.Replace("%","")) / 100;
                         break;
                     case "Picture":
-                        //TODO Gdzie zapisywać obrazki?
-                        newRecord.ImgSrc = change;
+                        newRecord.ImgSrc = temp;
+                        temp = "";
                         break;
                 }
             } else {
@@ -176,7 +178,6 @@ namespace ClickEnglish
                 return;
             }
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.FileName = "Image"; // Default file name
             dlg.DefaultExt = ".bmp"; // Default file extension
             dlg.Filter = "JPEG (.jpeg)|*.jpeg;*.jpg" +
                 "|TIFF (.tiff)|*.tiff" +
@@ -184,7 +185,22 @@ namespace ClickEnglish
                 "|GIF (.gif)|*.gif" +
                 "|PNG (.png)|*.png" +
                 "|JPG (.jpg)|*.jpg"; // Filter files by extension
+            dlg.Multiselect = false;
 
+            if(dlg.ShowDialog() == true) {
+                var sourcePath = dlg.FileName;
+                var fileName = dlg.SafeFileName;
+                var targetPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
+                var combinedSource = System.IO.Path.Combine(sourcePath);
+                var combinedTarget = System.IO.Path.Combine(targetPath, fileName);
+
+                if(!System.IO.Directory.Exists(targetPath))
+                    System.IO.Directory.CreateDirectory(targetPath);
+
+                System.IO.File.Copy(combinedSource, combinedTarget, true);
+                temp = combinedTarget;
+            }
         }
     }
 }

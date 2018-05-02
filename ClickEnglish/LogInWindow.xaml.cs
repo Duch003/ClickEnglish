@@ -92,6 +92,10 @@ namespace ClickEnglish
                     break;
             }
         }
+
+        private void OnLoad(object sender, RoutedEventArgs e) {
+            txtUser.Focus();
+        }
     }
 }
 
