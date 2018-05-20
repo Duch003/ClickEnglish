@@ -19,33 +19,39 @@ namespace ClickEnglish
     /// </summary>
     public partial class Settings : Window
     {
-        private DatabaseManager _manager;
-        public Settings(DatabaseManager manager)
+        public Settings()
         {
             InitializeComponent();
-            _manager = manager;
-            VocabularySlider.Value  = GlobalSettings.RandomVocabulaySize;
-            TimeSlider.Value = GlobalSettings.Time;
-            tglSoundState.IsChecked = GlobalSettings.SoundState;
+            tglSoundState.IsChecked= GlobalSettings.Sound;
+            if (GlobalSettings.TimeChallange <= 15)
+                TimeSlider.Value = GlobalSettings.TimeChallange;
+            else if (GlobalSettings.TimeChallange < 1)
+                TimeSlider.Value = 1;
+            else
+                TimeSlider.Value = 15;
+            TimeSlider.Maximum = 15;
+            TimeSlider.Minimum = 1;
+            VocabularySlider.Value = GlobalSettings.VocabularySize;
+            VocabularySlider.Maximum = GlobalSettings.VocabularySize_UpperLimit;
+            VocabularySlider.Minimum = 1;
         }
 
-        #region Events
+        private void Settings_Cancel(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void Settings_Apply(object sender, RoutedEventArgs e)
         {
-            if(_manager.IsConnected())
+            using (var ctx = new DictionaryContext())
             {
-                GlobalSettings.RandomVocabulaySize = (int)VocabularySlider.Value;
-                GlobalSettings.Time = (int)TimeSlider.Value;
-                GlobalSettings.SoundState = (bool)tglSoundState.IsChecked;
-                _manager.SaveSettings();
-
-                this.Close();
+                ctx.UserSettings.First().Sound = (bool)tglSoundState.IsChecked;
+                ctx.UserSettings.First().TimeChallange= (int)TimeSlider.Value;
+                ctx.UserSettings.First().VocabularySize = (int)VocabularySlider.Value;
+                ctx.SaveChanges();
+                
             }
-            else
-                MessageBox.Show("Database is disconnected.", "Cannot save settings.", MessageBoxButton.OK, MessageBoxImage.Error);
+            this.Close();
         }
-
-        private void Settings_Cancel(object sender, RoutedEventArgs e) => this.Close();
-        #endregion
     }
 }

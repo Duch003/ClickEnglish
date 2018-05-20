@@ -31,32 +31,8 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<!--Datagrid with dictionary-->
-		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
-				  Margin="10" CellEditEnding="EditRecord_End" DataContext="{Binding Data}" BeginningEdit="EditBegin_SpecialPicturesHandler" >
-			<DataGrid.Columns>
-				<!--Polish word-->
-				<DataGridTextColumn Header="Polish word" Binding="{Binding WordPl}" MinWidth="250"/>
-				<!--English word-->
-				<DataGridTextColumn Header="English word" Binding="{Binding WordEng}" MinWidth="250"/>
-				<!--Category-->
-				<DataGridComboBoxColumn x:Name ="dgcbCategory" Header="Category" DisplayMemberPath="{Binding Name}" SelectedItemBinding="{Binding Cat.Name}" MinWidth="100">
-					<!--Special setting for binding - because normal binding doesnt word-->
-					<DataGridComboBoxColumn.ElementStyle>
-							<Style>
-								<Setter Property="ComboBox.ItemsSource" Value="{Binding Path=CategoryList.Name}"/>
-							</Style>
-						</DataGridComboBoxColumn.ElementStyle>
-					<DataGridComboBoxColumn.EditingElementStyle>
-						<Style>
-							<Setter Property="ComboBox.ItemsSource" Value="{Binding Path=CategoryList.Name}"/>
-						</Style>
-					</DataGridComboBoxColumn.EditingElementStyle>
-				</DataGridComboBoxColumn>
-				<!--Difficulty-->
-				<DataGridTextColumn Header="Difficulty" Binding="{Binding Percentage, StringFormat={}{0}%}" MinWidth="50"/>
-				<!--Image-->
-				<DataGridTextColumn Header="Picture" Binding="{Binding ImgSrc}" MinWidth="100"/>
-			</DataGrid.Columns>
+		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="True"
+				  Margin="10" RowEditEnding="OnEndEdit">
 		</DataGrid>
 
 		<!--Buttons and searcher-->

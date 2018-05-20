@@ -5,6 +5,7 @@ using System.Data;
 using System.Windows;
 using System.Linq;
 using Microsoft.Win32;
+using System.Data.Entity;
 
 namespace ClickEnglish
 {
@@ -13,219 +14,214 @@ namespace ClickEnglish
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DatabaseManager _manager;
-        private List<Category> _categories;
-        public ObservableCollection<string> Categories;
+        Dictionary<int, string> CategoriesDictionary;
+
         public MainWindow()
         {
+            //Initialization
             InitializeComponent();
-            _manager = new DatabaseManager("localhost", "Duch003", "Killer003", "5432", "MyDictionaryApp_IntegrationTests");
-            do {
-                OpenLogInScreen();
-            } while(GlobalSettings.ID == 0);
-            var result = _manager.TakeCategories(GlobalSettings.ID, out var temp);
-            if(result) {
-                ConvertCategories(temp);
-                lbCategories.ItemsSource = Categories;
-            } else
-                throw new Exception("Method: MainWindow. Cannot assign categories to MainWindow.");
+
+            //Gathering information
+            using (var context = new DictionaryContext())
+            {
+                //Get Categories
+                var categories = from z in context.Categories
+                                 select z;
+
+                //Save as Dictionary
+                CategoriesDictionary = new Dictionary<int, string>();
+                foreach(var z in categories)
+                {
+                    CategoriesDictionary.Add(z.ID, z.Name);
+                }
+
+                //Count rows in Settings
+                var count = (from z in context.UserSettings
+                             select z).Count();
+
+                //If 0 -> first app run
+                if(count == 0)
+                {
+                    var setting = new UserSettings()
+                    {
+                        ID = 0,
+                        Sound = true,
+                        TimeChallange = 15,
+                        VocabularySize = 0
+                    };
+                    context.UserSettings.Add(setting);
+                    context.SaveChanges();
+                    GlobalSettings.Sound = setting.Sound;
+                    GlobalSettings.TimeChallange = setting.TimeChallange;
+                    GlobalSettings.VocabularySize = setting.VocabularySize;
+                    GlobalSettings.VocabularySize_UpperLimit = (from z in context.Dictionary
+                                                                select z).Count();
+                }
+                //If 1 or more -> load data, first record
+                else
+                {
+                    var setting = (from z in context.UserSettings
+                                   select z).First();
+
+                    GlobalSettings.Sound = setting.Sound;
+                    GlobalSettings.TimeChallange = setting.TimeChallange;
+                    GlobalSettings.VocabularySize = setting.VocabularySize;
+                    GlobalSettings.VocabularySize_UpperLimit = (from z in context.Dictionary
+                                                                select z).Count();
+
+                }
+            }
+            lbCategories.DataContext = CategoriesDictionary.Values;
         }
 
         #region Methods
-        private void OpenLogInScreen()
+        void TimeChallange()
         {
             this.IsEnabled = false;
-            var temp = new LogInWindow();
-            temp.ShowDialog();
-            this.IsEnabled = true;
-        }
+            Dictionary<int, Question> pack = new Dictionary<int, Question>();
+            using (var ctx = new DictionaryContext())
+            {
+                var questionSet = from z in ctx.Dictionary
+                                  select z;
 
-        private void OpenSettings()
-        {
-            this.IsEnabled = false;
-            var temp = new Settings(_manager);
-            temp.ShowDialog();
-            this.IsEnabled = true;
-        }
-
-        private void OpenAbout()
-        {
-            this.IsEnabled = false;
-            var temp = new About();
-            temp.ShowDialog();
-            this.IsEnabled = true;
-        }
-
-        private void OpenDictionaryManager()
-        {
-            this.IsEnabled = false;
-            var temp = new DictionaryManager(_manager);
-            temp.ShowDialog();
-            this.IsEnabled = true;
-        }
-
-        private void OpenCategoryManager()
-        {
-            this.IsEnabled = false;
-            var temp = new CategoryManager(_manager);
-            temp.ShowDialog();
-            var result = _manager.TakeCategories(GlobalSettings.ID, out var newCategories);
-            if(result) {
-                ConvertCategories(newCategories);
-                lbCategories.ItemsSource = Categories;
+                int i = 0;
+                foreach(var z in questionSet)
+                {
+                    var question = new Question(z, 1);
+                    pack.Add(i, question);
+                }
             }
+            MainGameBoard game = new MainGameBoard(pack, false);
+            game.ShowDialog();
             this.IsEnabled = true;
         }
 
-        private void ParticularCategory()
+        void WholeDictionary()
         {
             this.IsEnabled = false;
-            var query = from z in _categories
-                        where z.Name == lbCategories.SelectedValue.ToString()
-                        select z;
-            if(query.Any()) {
-                var result = _manager.GameSet_ParticularCategory(GlobalSettings.ID, query.First().ID, out var data);
-                if(result) {
-                    var convertedProperly = ConvertToList(data, out var listQuestions);
-                    if(convertedProperly) {
-                        MainGameBoard game = new MainGameBoard(listQuestions, false);
-                    } else {
-                        MessageBox.Show("Method: ParticularCategory. An error occured while creating GameBoard. Can't convert result to list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }  
-                } else
-                    MessageBox.Show("Method: ParticularCategory. An error occured while creating GameBoard. There are no rows in return.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else 
-                MessageBox.Show($"Method: ParticularCategory. An error occured while creating GameBoard. " +
-                    $"Category {lbCategories.SelectedValue.ToString()} doesnt exists", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            
+            Dictionary<int, Question> pack = new Dictionary<int, Question>();
+            using (var ctx = new DictionaryContext())
+            {
+                var questionSet = from z in ctx.Dictionary
+                                  select z;
+
+                int i = 0;
+                foreach (var z in questionSet)
+                {
+                    var question = new Question(z, 3);
+                    pack.Add(i, question);
+                }
+            }
+            MainGameBoard game = new MainGameBoard(pack, true);
+            game.ShowDialog();
             this.IsEnabled = true;
         }
 
-        private void RandomVocabSet() {
+        void ParticularCategory()
+        {
             this.IsEnabled = false;
-            var result = _manager.GameSet_RandomVocabulary(GlobalSettings.ID, GlobalSettings.RandomVocabulaySize, out var data);
-            if(result) {
-                var convertedProperly = ConvertToList(data, out var listQuestions);
-                if(convertedProperly) {
-                    MainGameBoard game = new MainGameBoard(listQuestions, false);
-                } else
-                    MessageBox.Show("Method: RandomVocabSet. An error occured while creating GameBoard. Can't convert result to list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else
-                MessageBox.Show("Method: RandomVocabSet. An error occured while creating GameBoard. There are no rows in return.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Dictionary<int, Question> pack = new Dictionary<int, Question>();
+            using (var ctx = new DictionaryContext())
+            {
+                var questionSet = (from z in ctx.Categories
+                                  select z.Words).First();
+
+                int i = 0;
+                foreach (var z in questionSet)
+                {
+                    var question = new Question(z, 3);
+                    pack.Add(i, question);
+                }
+            }
+            MainGameBoard game = new MainGameBoard(pack, true);
+            game.ShowDialog();
             this.IsEnabled = true;
         }
 
-        private void TimeChallange() {
+        void RandomVocabSet()
+        {
             this.IsEnabled = false;
-            var result = _manager.GameSet_WholeDictionary(GlobalSettings.ID, out var temp);
-            if(result) {
-                var convertedProperly = ConvertToList(temp, out var listQuestion);
-                if(convertedProperly) {
-                    MainGameBoard game = new MainGameBoard(listQuestion, true);
-                } else
-                    MessageBox.Show("Method: TimeChallange. An error occured while creating GameBoard. Can't convert result to list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else
-                MessageBox.Show("Method: TimeChallange. An error occured while creating GameBoard. There are no rows in return.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Dictionary<int, Question> pack = new Dictionary<int, Question>();
+            using (var ctx = new DictionaryContext())
+            {
+                //Take questions
+                var questionRaw = from z in ctx.Dictionary
+                                  orderby z.Difficulty ascending
+                                  select z;
+                //Count sum of difficulty
+                var difficultySum = (from z in questionRaw
+                                     select z.Difficulty).Sum();
+                //Count number of questions
+                var wordsCount = (from z in questionRaw
+                                  select z).Count();
+                //Calculate average
+                var average = difficultySum / wordsCount;
+                //Take words with difficulty below average
+                var questionsBelowAverage = from z in questionRaw
+                                    where z.Difficulty <= average
+                                    select z;
+                //Count words with high difficulty
+                var count = (from z in questionsBelowAverage
+                             select z).Count();
+
+                IQueryable<Word> questionSet;
+                //If more than user set
+                if (count > GlobalSettings.VocabularySize)
+                    questionSet = (from z in questionsBelowAverage
+                                   orderby z.Difficulty ascending
+                                   select z).Take(GlobalSettings.VocabularySize);
+                //Rarely, when all difficulties are equals
+                else if (count == 0)
+                    questionSet = questionRaw;
+                //If less than 50 -> take all words
+                else
+                    questionSet = from z in questionsBelowAverage
+                                  where z.Difficulty < average
+                                  select z;
+                
+                int i = 0;
+                foreach (var z in questionSet)
+                {
+                    var question = new Question(z, 3);
+                    pack.Add(i, question);
+                }
+            }
+            MainGameBoard game = new MainGameBoard(pack, true);
+            game.ShowDialog();
             this.IsEnabled = true;
         }
 
-        private void WholeDictionary() {
+        void Settings()
+        {
             this.IsEnabled = false;
-            var result = _manager.GameSet_WholeDictionary(GlobalSettings.ID, out var temp);
-            if(result) {
-                var convertedProperly = ConvertToList(temp, out var listQuestion);
-                if(convertedProperly) {
-                    MainGameBoard game = new MainGameBoard(listQuestion, false);
-                } else
-                    MessageBox.Show("Method: WholeDictionary. An error occured while creating GameBoard. Can't convert result to list.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else
-                MessageBox.Show("Method: WholeDictionary. An error occured while creating GameBoard. There are no rows in return.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            var temp = new Settings();
+            temp.ShowDialog();
             this.IsEnabled = true;
         }
         #endregion
 
-        //False raw is null, 0 rows or number of columns different from 7
-        //True if successfull
-        private bool ConvertToList(DataSet raw, out List<Question> processed)
-        {
-            if(raw is null) {
-                processed = null;
-                return false;
-            }
-
-            if(raw.Tables[0].Rows.Count == 0) {
-                processed = null;
-                return false;
-            }
-
-            if(!(raw.Tables[0].Columns.Count == 7)) {
-                processed = null;
-                return false;
-            }
-
-            processed = new List<Question>();
-
-            for(int i = 0; i < raw.Tables[0].Rows.Count; i++) {
-                var id = Convert.ToInt32(raw.Tables[0].Rows[i][0]);     //Question ID
-                var eng = raw.Tables[0].Rows[i][1].ToString();          //Question ENG
-                var pl = raw.Tables[0].Rows[i][2].ToString();           //Question PL
-                var percentage = Convert.ToDouble(raw.Tables[0].Rows[i][3]); //Percentage
-                var img = raw.Tables[0].Rows[i][4].ToString();          //Img path
-
-                var cat_id = Convert.ToInt32(raw.Tables[0].Rows[i][5]); //Category ID
-                var cat_name = raw.Tables[0].Rows[i][6].ToString();     //Category Name
-
-                var tempCat = new Category(cat_id, cat_name);
-                var tempQues = new Question(id, eng, pl, tempCat, percentage, img);
-
-                processed.Add(tempQues);
-            }
-            return true;
-                
-        }
-
-        private bool ConvertCategories(DataSet raw) {
-            if(raw is null) {
-                return false;
-            }
-
-            if(raw.Tables[0].Rows.Count == 0) {
-                return false;
-            }
-
-            if(!(raw.Tables[0].Columns.Count == 2)) {
-                return false;
-            }
-            _categories = new List<Category>();
-            Categories = new ObservableCollection<string>();
-            for(int i = 0; i < raw.Tables[0].Rows.Count; i++) {
-                var cat_id = Convert.ToInt32(raw.Tables[0].Rows[i][0]); //Category ID
-                var cat_name = raw.Tables[0].Rows[i][1].ToString();     //Category Name
-
-                var tempCat = new Category(cat_id, cat_name);
-
-                _categories.Add(tempCat);
-                Categories.Add(cat_name);
-            }
-            return true;
-        }
-
         #region Events
-        private void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
+        private void TimeChallange_Click(object sender, RoutedEventArgs e) => TimeChallange();
 
-        private void RandomVocabSet_Click(object sender, RoutedEventArgs e) => RandomVocabSet();
+        private void WholeDictionary_Click(object sender, RoutedEventArgs e) => WholeDictionary(); 
+
+        private void EditDictionary_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Settings_Click(object sender, RoutedEventArgs e) => Settings();
+
+        private void EditCategories_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+        }
 
         private void ParticularCategory_Click(object sender, RoutedEventArgs e) => ParticularCategory();
 
-        private void TimeChallange_Click(object sender, RoutedEventArgs e) => TimeChallange();
-
-        private void WholeDictionary_Click(object sender, RoutedEventArgs e) => WholeDictionary();
-
-        private void EditDictionary_Click(object sender, RoutedEventArgs e) => OpenDictionaryManager();
-
-        private void EditCategories_Click(object sender, RoutedEventArgs e) => OpenCategoryManager();
-
-        private void About_Click(object sender, RoutedEventArgs e) => OpenAbout();
+        private void RandomVocabSet_Click(object sender, RoutedEventArgs e) => RandomVocabSet();
         #endregion
     }
 }

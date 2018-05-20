@@ -8,42 +8,38 @@ namespace ClickEnglish
 {
     public static class GlobalSettings
     {
-        public static bool SoundState { get; set; }
-        public static int ID { get; set; }
-
-        //Time for time challange
-        //Min: 1 min., max 15 min.
-        private static int _time;                 
-        public static int Time
+        public static bool Sound { get; set; }
+        private static int _TimeChallange;
+        public static int TimeChallange 
         {
-            get
+            get 
             {
-                return _time;
+                return _TimeChallange;
             }
-            set
+            set 
             {
-                if (value >= 1 && value <= 15)
-                    _time = value;
+                if (TimeChallange_UpperLimt >= value)
+                    _TimeChallange = value;
                 else
-                    _time = 5;
+                    _TimeChallange = TimeChallange_UpperLimt;
             }
         }
-        //Number of words in challange 
-        //Min: 5, max: 100
-        private static int _rndVocabularySize;    
-        public static int RandomVocabulaySize
+        private static int _VocabularySize;
+        public static int VocabularySize 
         {
-            get
+            get 
             {
-                return _rndVocabularySize;
+                return _VocabularySize;
             }
-            set
+            set 
             {
-                if (value >= 5 && value <= 100)
-                    _rndVocabularySize = value;
+                if (VocabularySize_UpperLimit >= value)
+                    _VocabularySize = value;
                 else
-                    _rndVocabularySize = 15;
+                    _VocabularySize = VocabularySize_UpperLimit;
             }
         }
+        static int TimeChallange_UpperLimt = 15;
+        public static int VocabularySize_UpperLimit;
     }
 }
