@@ -71,11 +71,16 @@ namespace ClickEnglish
             //Randomize which to ask
             //If even -> english word
             if (rnd.Next(0, 1000) % 2 == 0)
+            {
                 tbAsk.Text = temp.English;
-            
+                GoodAnwser = temp.Polish;
+            }
             //Else -> polish word
             else
-                tbAsk.Text = temp.Polish;                   
+            {
+                tbAsk.Text = temp.Polish;
+                GoodAnwser = temp.English;
+            }             
 
             //Decode image
             if (temp.Picture == null)

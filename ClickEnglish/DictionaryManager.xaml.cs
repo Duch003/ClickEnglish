@@ -1,19 +1,7 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data;
+﻿using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ClickEnglish
 {
@@ -91,11 +79,12 @@ namespace ClickEnglish
             var editedWord = dgDictionary.SelectedItem as Word;
             using (var ctx = new DictionaryContext())
             {
-                ctx.Dictionary.Where(z => z.ID == editedWord.ID).First().Category = editedWord.Category;
-                ctx.Dictionary.Where(z => z.ID == editedWord.ID).First().Difficulty = editedWord.Difficulty;
-                ctx.Dictionary.Where(z => z.ID == editedWord.ID).First().English = editedWord.English;
-                ctx.Dictionary.Where(z => z.ID == editedWord.ID).First().Polish = editedWord.Polish;
-                ctx.Dictionary.Where(z => z.ID == editedWord.ID).First().Picture = editedWord.Picture;
+                var temp = ctx.Dictionary.Where(z => z.ID == editedWord.ID).First();
+                temp.Category = editedWord.Category;
+                temp.Difficulty = editedWord.Difficulty;
+                temp.English = editedWord.English;
+                temp.Polish = editedWord.Polish;
+                temp.Picture = editedWord.Picture;
                 ctx.SaveChanges();
                 dgDictionary.ItemsSource = ctx.Dictionary;
             }

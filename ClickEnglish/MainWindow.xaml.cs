@@ -198,26 +198,44 @@ namespace ClickEnglish
             temp.ShowDialog();
             this.IsEnabled = true;
         }
+
+        void EditDictionary()
+        {
+            this.IsEnabled = false;
+            var temp = new DictionaryManager();
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
+
+        void EditCategories()
+        {
+            this.IsEnabled = false;
+            var temp = new CategoryManager();
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
+
+        void About()
+        {
+            this.IsEnabled = false;
+            var temp = new About();
+            temp.ShowDialog();
+            this.IsEnabled = true;
+        }
         #endregion
 
         #region Events
         private void TimeChallange_Click(object sender, RoutedEventArgs e) => TimeChallange();
 
-        private void WholeDictionary_Click(object sender, RoutedEventArgs e) => WholeDictionary(); 
+        private void WholeDictionary_Click(object sender, RoutedEventArgs e) => WholeDictionary();
 
-        private void EditDictionary_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        private void EditDictionary_Click(object sender, RoutedEventArgs e) => EditDictionary();
 
         private void Settings_Click(object sender, RoutedEventArgs e) => Settings();
 
-        private void EditCategories_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        private void EditCategories_Click(object sender, RoutedEventArgs e) => EditCategories();
 
-        private void About_Click(object sender, RoutedEventArgs e)
-        {
-        }
+        private void About_Click(object sender, RoutedEventArgs e) => About();
 
         private void ParticularCategory_Click(object sender, RoutedEventArgs e) => ParticularCategory();
 
