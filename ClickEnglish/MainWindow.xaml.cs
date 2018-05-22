@@ -211,7 +211,16 @@ namespace ClickEnglish
         {
             this.IsEnabled = false;
             var temp = new CategoryManager();
-            temp.ShowDialog();
+            try
+            {
+                temp.ShowDialog();
+            }
+            catch(Exception e)
+            {
+                var error = string.Format(e.Message + "\n\n" + e.Source + "\n\n" + e.StackTrace);
+                MessageBox.Show(error, "ERROR");
+            }
+            
             this.IsEnabled = true;
         }
 

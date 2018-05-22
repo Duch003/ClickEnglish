@@ -17,51 +17,72 @@ namespace ClickEnglish
             InitializeComponent();
             using (var ctx = new DictionaryContext())
             {
-                dgCategory.ItemsSource = ctx.Categories.Local;
-                dgCategory.DataContext = ctx.Categories.Local;
+                dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        #region Events
+        private void Add_Click(object sender, RoutedEventArgs e) => AddCategory();
+
+        private void Remove_Click(object sender, RoutedEventArgs e) => RemoveCategory(dgCategory.SelectedItem as Category);
+
+        private void Exit_Click(object sender, RoutedEventArgs e) => Close();
+
+        private void EditCategory_End(object sender, DataGridCellEditEndingEventArgs e) => EditCategory(dgCategory.SelectedItem as Category, e);
+
+        private void KeyClick(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case System.Windows.Input.Key.Delete:
+                    RemoveCategory(dgCategory.SelectedItem as Category);
+                    break;
+                case System.Windows.Input.Key.OemPlus:
+                    AddCategory();
+                    break;
+            }
+        }
+        #endregion
+
+        #region Methods
+        private void EditCategory(Category category, DataGridCellEditEndingEventArgs e)
+        {
+            var newText = (e.EditingElement as TextBox).Text;
+            using (var ctx = new DictionaryContext())
+            {
+                var temp = ctx.Categories.Where(z => z.ID == category.ID).First();
+                temp.Name = newText;
+                ctx.SaveChanges();
+                //TODO Po zatwierdzeniu enterem index zaznaczonego itemu skacze o jeden, a nastepny nie istnieje, jezeli jest zaznaczony ostatni.
+                dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
+            }
+        }
+
+        private void AddCategory()
         {
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = new Category();
                 tempCategory.Name = "Category name";
-                ctx.Categories.Add(tempCategory);
+                ctx.Categories.Local.Add(tempCategory);
                 ctx.SaveChanges();
-                dgCategory.ItemsSource = ctx.Categories.Local;
+                dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
         }
 
-        private void Remove_Click(object sender, RoutedEventArgs e)
+        private void RemoveCategory(Category category)
         {
+            if (category == null) return;
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = (from z in ctx.Categories
-                                    where (dgCategory.SelectedItem as Category).ID == z.ID
-                                    select z).First();
+                                    where category.ID == z.ID
+                                    select z).FirstOrDefault();
                 ctx.Categories.Remove(tempCategory);
                 ctx.SaveChanges();
-                dgCategory.ItemsSource = ctx.Categories.Local;
+                dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
         }
-
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
-
-        private void EditCategory_End(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            var editedCategory = dgCategory.SelectedItem as Category;
-            using (var ctx = new DictionaryContext())
-            {
-                var temp = ctx.Categories.Where(z => z.ID == editedCategory.ID).First();
-                temp.Name = editedCategory.Name;
-                ctx.SaveChanges();
-                dgCategory.ItemsSource = ctx.Categories.Local;
-            }
-        }
+        #endregion
     }
 }
