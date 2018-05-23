@@ -28,7 +28,8 @@
 		</Grid.ColumnDefinitions>
 
 		<!--Datagrid with categories-->
-		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="True" Margin="10" CellEditEnding="EditCategory_End">
+		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="True" Margin="10" CellEditEnding="EditCategory_End" CanUserReorderColumns="False"
+				  CanUserSortColumns="False">
 		</DataGrid>
 
 		<!--Buttons-->
