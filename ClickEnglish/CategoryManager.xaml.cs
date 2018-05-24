@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ClickEnglish
 {
@@ -26,21 +27,25 @@ namespace ClickEnglish
 
         private void Remove_Click(object sender, RoutedEventArgs e) => RemoveCategory(dgCategory.SelectedItem as Category);
 
-        private void Exit_Click(object sender, RoutedEventArgs e) => Close();
+        private void Exit_Click(object sender, RoutedEventArgs e) => SaveChanges();
 
         private void EditCategory_End(object sender, DataGridCellEditEndingEventArgs e) => EditCategory(dgCategory.SelectedItem as Category, e);
 
-        private void KeyClick(object sender, System.Windows.Input.KeyEventArgs e)
+        private void PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            DataGridRow dgr = (DataGridRow)(dgCategory.ItemContainerGenerator.ContainerFromIndex(dgCategory.SelectedIndex));
+            if (dgr.IsEditing) return;
             switch (e.Key)
             {
-                case System.Windows.Input.Key.Delete:
+                case Key.Delete:
+                    if ((dgCategory.SelectedItem as Category) == null) return;
                     RemoveCategory(dgCategory.SelectedItem as Category);
                     break;
-                case System.Windows.Input.Key.OemPlus:
+                case Key.OemPlus:
                     AddCategory();
                     break;
             }
+
         }
         #endregion
 
@@ -48,13 +53,16 @@ namespace ClickEnglish
         private void EditCategory(Category category, DataGridCellEditEndingEventArgs e)
         {
             var newText = (e.EditingElement as TextBox).Text;
+            if (string.IsNullOrEmpty(newText))
+                return;
             using (var ctx = new DictionaryContext())
             {
-                var temp = ctx.Categories.Where(z => z.ID == category.ID).First();
-                temp.Name = newText;
+                var temp = ctx.Categories.Where(z => z.ID == category.ID);
+                if (temp.Count() == 0 || temp == null)
+                    return;
+                
+                temp.First().Name = newText;
                 ctx.SaveChanges();
-                //TODO Po zatwierdzeniu enterem index zaznaczonego itemu skacze o jeden, a nastepny nie istnieje, jezeli jest zaznaczony ostatni.
-                dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
         }
 
@@ -65,6 +73,7 @@ namespace ClickEnglish
                 var tempCategory = new Category();
                 tempCategory.Name = "Category name";
                 ctx.Categories.Local.Add(tempCategory);
+                
                 ctx.SaveChanges();
                 dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
@@ -73,16 +82,32 @@ namespace ClickEnglish
         private void RemoveCategory(Category category)
         {
             if (category == null) return;
+            var selected = dgCategory.SelectedIndex;
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = (from z in ctx.Categories
                                     where category.ID == z.ID
                                     select z).FirstOrDefault();
+                if (tempCategory == null) return;
                 ctx.Categories.Remove(tempCategory);
+               
                 ctx.SaveChanges();
                 dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
+            if (dgCategory.Items.Count > 0)
+                dgCategory.SelectedIndex = 0;
+        }
+
+        private void SaveChanges()
+        {
+            using (var ctx = new DictionaryContext())
+            {
+                ctx.SaveChanges();
+            }
+            this.Close();
         }
         #endregion
+
+        
     }
 }

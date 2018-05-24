@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-       Title="CategoryManager" Height="500" Width="530" KeyDown="KeyClick">
+       Title="CategoryManager" Height="500" Width="550" ResizeMode="NoResize">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -24,16 +24,17 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="121*"/>
+			<ColumnDefinition Width="401*"/>
 		</Grid.ColumnDefinitions>
 
 		<!--Datagrid with categories-->
-		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="True" Margin="10" CellEditEnding="EditCategory_End" CanUserReorderColumns="False"
-				  CanUserSortColumns="False">
+		<DataGrid x:Name="dgCategory" Grid.Row="0" Grid.Column="0" Opacity="0.6" AutoGenerateColumns="True" Margin="10,10,10,90" CellEditEnding="EditCategory_End" CanUserReorderColumns="False"
+				  CanUserSortColumns="False" Grid.ColumnSpan="2" Grid.RowSpan="2" PreviewKeyDown="PreviewKeyDown">
 		</DataGrid>
 
 		<!--Buttons-->
-		<WrapPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+		<WrapPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" Grid.ColumnSpan="2" Margin="6,160,6,0">
 			<!--Add new category-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="Add_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Add" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
