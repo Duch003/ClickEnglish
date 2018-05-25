@@ -20,6 +20,7 @@ namespace ClickEnglish
             {
                 dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
+            
         }
 
         #region Events
@@ -31,7 +32,7 @@ namespace ClickEnglish
 
         private void EditCategory_End(object sender, DataGridCellEditEndingEventArgs e) => EditCategory(dgCategory.SelectedItem as Category, e);
 
-        private void PreviewKeyDown(object sender, KeyEventArgs e)
+        private void PreviewKeyDown(object sender, KeyEventArgs e) 
         {
             DataGridRow dgr = (DataGridRow)(dgCategory.ItemContainerGenerator.ContainerFromIndex(dgCategory.SelectedIndex));
             if (dgr.IsEditing) return;
@@ -47,6 +48,17 @@ namespace ClickEnglish
             }
 
         }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            foreach (var z in dgCategory.Columns)
+            {
+                if (z.Header.ToString() == nameof(Category.ID) || z.Header.ToString() == nameof(Category.Words))
+                    z.IsReadOnly = true;
+                else if (z.Header.ToString() == nameof(Category.Name))
+                    z.Width = 400;
+            }
+        }
         #endregion
 
         #region Methods
@@ -58,7 +70,9 @@ namespace ClickEnglish
             using (var ctx = new DictionaryContext())
             {
                 var temp = ctx.Categories.Where(z => z.ID == category.ID);
-                if (temp.Count() == 0 || temp == null)
+                if(temp == null)
+                    return;
+                if (temp.Count() == 0)
                     return;
                 
                 temp.First().Name = newText;
@@ -107,7 +121,5 @@ namespace ClickEnglish
             this.Close();
         }
         #endregion
-
-        
     }
 }

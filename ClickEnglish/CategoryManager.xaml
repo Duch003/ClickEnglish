@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
         mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-       Title="CategoryManager" Height="500" Width="550" ResizeMode="NoResize">
+       Title="CategoryManager" Height="500" Width="550" ResizeMode="NoResize" Loaded="OnLoaded">
 
 	<Window.Resources>
 		<ResourceDictionary>
