@@ -24,7 +24,6 @@ namespace ClickEnglish
         public string English { get; set; }
         [Required]
         public string Polish { get; set; }
-        [Required]
         public Category Category { get; set; }
         public double Difficulty { get; set; }
         public byte[] Picture { get; set; }

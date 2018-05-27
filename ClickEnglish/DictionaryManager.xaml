@@ -31,8 +31,22 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<!--Datagrid with dictionary-->
-		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="True"
-				  Margin="10" RowEditEnding="OnEndEdit" PreviewKeyDown="KeyPreview">
+		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
+				  Margin="10" PreviewKeyDown="KeyPreview" CellEditEnding="EditDictionary_End" BeginningEdit="EditDictionary_Begin">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
+				<DataGridTextColumn Header="English" Binding="{Binding English}"></DataGridTextColumn>
+				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}"></DataGridTextColumn>
+				<DataGridComboBoxColumn x:Name="dgCbxCategories" Header="Category" DisplayMemberPath="Name" ItemsSource="{Binding Category}"></DataGridComboBoxColumn>
+				<DataGridTextColumn Header="Difficulty" Binding="{Binding Difficulty}"></DataGridTextColumn>
+				<DataGridTemplateColumn Header="Picture">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Image Source="{Binding Picture}" Stretch="Fill" MaxWidth="200" MinWidth="200"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
 		</DataGrid>
 
 		<!--Buttons and searcher-->
