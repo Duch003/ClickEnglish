@@ -1,10 +1,13 @@
 ﻿using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ClickEnglish
@@ -87,7 +90,7 @@ namespace ClickEnglish
             {
                 var categoryList = (from z in ctx.Categories
                                     select z).ToList();
-                dgCbxCategories.ItemsSource = categoryList;
+                //dgCbxCategories.ItemsSource = categoryList;
             }
         }
         #endregion
@@ -108,6 +111,7 @@ namespace ClickEnglish
                 ctx.SaveChanges();
                 dgDictionary.ItemsSource = new ObservableCollection<Word>(ctx.Dictionary.ToList());
             }
+            Refresh();
         }
 
         private void RemoveWord(Word word)
@@ -127,6 +131,7 @@ namespace ClickEnglish
             }
             if (dgDictionary.Items.Count > 0)
                 dgDictionary.SelectedIndex = 0;
+            Refresh();
         }
 
         private void SaveChanges()
@@ -141,6 +146,7 @@ namespace ClickEnglish
         private void EditWord(Word word, DataGridCellEditEndingEventArgs e)
         {
             //TODO Pomimo wyboru kategorii nie zapisuje się ona
+
             switch (e.Column.Header.ToString())
             {
                 case nameof(Word.Category):
@@ -151,6 +157,7 @@ namespace ClickEnglish
                                     where word.ID == z.ID
                                     select z).First();
                         temp.Category = newCategory;
+                        MessageBox.Show(temp.Category.Name);
                         ctx.SaveChanges();
                     }
                     break;
@@ -188,11 +195,13 @@ namespace ClickEnglish
                                     where word.ID == z.ID
                                     select z).First();
                         temp.Picture = _tempPicture;
+                        (dgDictionary.SelectedItem as Word).Picture = _tempPicture;
                         ctx.SaveChanges();
                     }
                     _tempPicture = null;
                     break;
             }
+            Refresh();
         }
 
         private byte[] PictureManager()
@@ -226,6 +235,46 @@ namespace ClickEnglish
             {
                 _tempPicture = PictureManager();
             }
+        }
+
+        private void ClearPicture(object sender, RoutedEventArgs e)
+        {
+            var word = dgDictionary.SelectedItem as Word;
+            using (var ctx = new DictionaryContext())
+            {
+                var temp = (from z in ctx.Dictionary
+                            where word.ID == z.ID
+                            select z).First();
+                temp.Picture = null;
+                (dgDictionary.SelectedItem as Word).Picture = null;
+                
+                ctx.SaveChanges();
+            }
+            Refresh();
+        }
+
+        private void Refresh()
+        {
+            var temp = dgDictionary.ItemsSource;
+            dgDictionary.ItemsSource = null;
+            dgDictionary.ItemsSource = temp;
+        }
+    }
+
+    public class ImageByteConverter : IValueConverter
+    {
+        //Image to byte[]
+        public object Convert(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+
+        //byte[] to image
+        public object ConvertBack(object value, Type targetType,
+            object parameter, CultureInfo culture)
+        {
+            return null;
         }
     }
 }

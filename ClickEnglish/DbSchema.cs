@@ -8,7 +8,7 @@ namespace ClickEnglish
     {
         public DictionaryContext() : base("Dictionary")
         {
-            Database.SetInitializer<DictionaryContext>(new CreateDatabaseIfNotExists<DbContext>());
+            Database.SetInitializer<DictionaryContext>(new DropCreateDatabaseIfModelChanges<DictionaryContext>());
         }
 
         public DbSet<Word> Dictionary { get; set; }
