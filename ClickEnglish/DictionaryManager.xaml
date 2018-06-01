@@ -37,7 +37,7 @@
 				<DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
 				<DataGridTextColumn Header="English" Binding="{Binding English}"></DataGridTextColumn>
 				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}"></DataGridTextColumn>
-				<DataGridComboBoxColumn x:Name="dgCbxCategories" Header="Category" DisplayMemberPath="Name" SelectedItemBinding="{Binding Category.Name}" ItemsSource="{Binding Category.ID}"></DataGridComboBoxColumn>
+				<DataGridComboBoxColumn x:Name="dgCbxCategories" Header="Category" DisplayMemberPath="Name" SelectedItemBinding="{Binding Category}"></DataGridComboBoxColumn>
 				<!--<DataGridComboBoxColumn x:Name="cbType" Width="50" Header="Type" 
     DisplayMemberPath="Name" SelectedValueBinding="{Binding Category}" >
 					<DataGridComboBoxColumn.ElementStyle>
@@ -55,7 +55,7 @@
 				<DataGridTemplateColumn Header="Picture">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Image Source="{Binding Converter={StaticResource ImageByteConverter}}" Stretch="Fill" MaxWidth="200" MinWidth="200">
+							<Image Source="{Binding Picture}" Stretch="Fill" MaxWidth="200" MinWidth="200">
 								<Image.ContextMenu>
 									<ContextMenu>
 										<MenuItem Header="Remove picture" Click="ClearPicture"/>

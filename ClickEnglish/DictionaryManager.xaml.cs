@@ -90,7 +90,8 @@ namespace ClickEnglish
             {
                 var categoryList = (from z in ctx.Categories
                                     select z).ToList();
-                //dgCbxCategories.ItemsSource = categoryList;
+
+                dgCbxCategories.ItemsSource = categoryList;
             }
         }
         #endregion
