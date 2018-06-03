@@ -74,6 +74,7 @@
     <Compile Include="CategoryManager.xaml.cs">
       <DependentUpon>CategoryManager.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter.cs" />
     <Compile Include="DbSchema.cs" />
     <Compile Include="DictionaryManager.xaml.cs">
       <DependentUpon>DictionaryManager.xaml</DependentUpon>

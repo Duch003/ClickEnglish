@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClickEnglish"
+		xmlns:converter="clr-namespace:ValueConverters"
         mc:Ignorable="d" Loaded="OnLoad"
         Title="DictionaryManager" Height="600" Width="800">
-
 	<Window.Resources>
+		
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Style.xaml"/>
@@ -21,6 +22,7 @@
 	
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
@@ -31,27 +33,17 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<!--Datagrid with dictionary-->
-		<DataGrid x:Name="dgDictionary"  Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
+		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
 				  Margin="10" PreviewKeyDown="KeyPreview" CellEditEnding="EditDictionary_End" BeginningEdit="EditDictionary_Begin">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
-				<DataGridTextColumn Header="English" Binding="{Binding English}"></DataGridTextColumn>
-				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}"></DataGridTextColumn>
-				<DataGridComboBoxColumn x:Name="dgCbxCategories" Header="Category" DisplayMemberPath="Name" SelectedItemBinding="{Binding Category}"></DataGridComboBoxColumn>
-				<!--<DataGridComboBoxColumn x:Name="cbType" Width="50" Header="Type" 
-    DisplayMemberPath="Name" SelectedValueBinding="{Binding Category}" >
-					<DataGridComboBoxColumn.ElementStyle>
-						<Style TargetType="{x:Type ComboBox}">
-							<Setter Property="ItemsSource" Value="{Binding Category}"/>
-						</Style>
-					</DataGridComboBoxColumn.ElementStyle>
-					<DataGridComboBoxColumn.EditingElementStyle>
-						<Style TargetType="{x:Type ComboBox}">
-							<Setter Property="ItemsSource" Value="{Binding Category}"/>
-						</Style>
-						</DataGridComboBoxColumn.EditingElementStyle>
-				</DataGridComboBoxColumn>-->
-				<DataGridTextColumn Header="Difficulty" Binding="{Binding Difficulty}"></DataGridTextColumn>
+			<!--<DataGrid.Resources>
+				<converter:NullImageConverter x:Key="NullImageConverter"/>
+			</DataGrid.Resources>-->
+				<DataGrid.Columns>
+				<DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="Auto"></DataGridTextColumn>
+				<DataGridTextColumn Header="English" Binding="{Binding English}" Width="Auto"></DataGridTextColumn>
+				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}" Width="Auto"></DataGridTextColumn>
+				<DataGridTextColumn Header="Category" Binding="{Binding Category}"  MinWidth="120"></DataGridTextColumn>
+				<DataGridTextColumn Header="Difficulty" Binding="{Binding Difficulty}" Width="Auto"></DataGridTextColumn>
 				<DataGridTemplateColumn Header="Picture">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
@@ -64,16 +56,21 @@
 							</Image>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-					
 				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 
 		</DataGrid>
 
-		<!--Buttons and searcher-->
-		<WrapPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+		<!--Searcher and Category selector-->
+		<WrapPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
 			<!--Searcher-->
 			<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" TextChanged="Searcher_TextChanged" MinWidth="255" MaxHeight="40"/>
+			<!--Category selector-->
+			<ComboBox x:Name="cbxCategories" MinWidth="300" Margin="10" SelectionChanged="CategoryChanged"></ComboBox>
+		</WrapPanel>
+		
+		<!--Buttons-->
+		<WrapPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
 			<!--Add new word-->
 			<Button Style="{StaticResource Button_TileStyle}" Height="60" Margin="10" FontFamily="Kristen ITC" FontSize="20" Click="AddWord_Click">
 				<TextBlock TextWrapping="WrapWithOverflow" Text="Add new" HorizontalAlignment="Center" TextAlignment="Center" VerticalAlignment="Center"/>
