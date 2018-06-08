@@ -8,13 +8,11 @@
         mc:Ignorable="d" Loaded="OnLoad"
         Title="DictionaryManager" Height="600" Width="800">
 	<Window.Resources>
-		
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Style.xaml"/>
 			</ResourceDictionary.MergedDictionaries>
 		</ResourceDictionary>
-		
 	</Window.Resources>
 
 	<Window.Background>
@@ -44,7 +42,9 @@
 				<DataGridTextColumn Header="English" Binding="{Binding English}" Width="Auto"></DataGridTextColumn>
 				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}" Width="Auto"></DataGridTextColumn>
 
-					<!--<DataGridTextColumn Header="Category" Binding="{Binding Path=Category, ElementName=Name}" MinWidth="120"></DataGridTextColumn>-->
+				
+				<!--<DataGridTextColumn Header="Category" Binding="{Binding Category.Title}" MinWidth="120"></DataGridTextColumn>-->
+				<DataGridComboBoxColumn x:Name="dgcbxCategories" Header="Category" SelectedItemBinding="{Binding CategoryID}" DisplayMemberPath="{Binding Title}"/>
 				<DataGridTextColumn Header="Difficulty" Binding="{Binding Difficulty}" Width="Auto"></DataGridTextColumn>
 				<DataGridTemplateColumn Header="Picture">
 					<DataGridTemplateColumn.CellTemplate>

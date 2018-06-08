@@ -25,6 +25,19 @@ namespace ClickEnglish
             using(var ctx = new DictionaryContext())
             {
                 var temp = new ObservableCollection<Word>(ctx.Dictionary.ToList());
+
+                var listCategories = (from z in ctx.Categories
+                                      select z).ToList();
+                var countCategories = (from z in ctx.Categories
+                                       select z).Count();
+                if (countCategories == 0)
+                    ctx.Categories.Add(new Category()
+                    {
+                        CategoryID = 0,
+                        Title = "None"
+                    });
+                dgcbxCategories.ItemsSource = new ObservableCollection<Category>(listCategories);
+                
                 dgDictionary.ItemsSource = temp;
                 dgDictionary.DataContext = ctx.Dictionary;
             }
@@ -63,7 +76,7 @@ namespace ClickEnglish
             //Prevent editing ID, Difficulty and Category
             foreach (var z in dgDictionary.Columns)
             {
-                if (z.Header.ToString() == nameof(Word.ID) || z.Header.ToString() == nameof(Word.Difficulty) || z.Header.ToString() == nameof(Word.Category))
+                if (z.Header.ToString() == nameof(Word.ID) || z.Header.ToString() == nameof(Word.Difficulty)/* || z.Header.ToString() == nameof(Word.Category)*/)
                     z.IsReadOnly = true;
             }
             //Create list of Categories
@@ -75,13 +88,12 @@ namespace ClickEnglish
                 ObservableCollection<string> CategoryTitles = new ObservableCollection<string>();
                 foreach (var z in categoryList)
                 {
-                    CategoryTitles.Add(z.Name);
+                    CategoryTitles.Add(z.Title);
                 }
-                CategoryTitles.Add("All");
                 
                 
                 cbxCategories.ItemsSource = CategoryTitles;
-                cbxCategories.SelectedItem = "All";
+                cbxCategories.SelectedItem = "None";
             }
         }
 
@@ -96,6 +108,7 @@ namespace ClickEnglish
             {
                 _tempPicture = PictureManager();
             }
+            
         }
 
         //Invoke when user click on "Remove picture" 
@@ -132,11 +145,13 @@ namespace ClickEnglish
                 var tempWord = new Word();
                 tempWord.Polish = "Polskie wyrażenie";
                 tempWord.English = "English expression";
+
+                //TODO Wywala blad podczas gdy kategoria jest ustawiona na null
                 if (cbxCategories.SelectedValue.ToString() == "All")
                     tempWord.Category = null;
                 else
                     tempWord.Category = (from z in ctx.Categories
-                                         where z.Name == cbxCategories.SelectedValue.ToString()
+                                         where z.Title == cbxCategories.SelectedValue.ToString()
                                          select z).FirstOrDefault();
                 
                 tempWord.Difficulty = 100;
@@ -315,7 +330,7 @@ namespace ClickEnglish
                 using (var ctx = new DictionaryContext())
                 {
                     var temp = from z in ctx.Dictionary
-                               where z.Category.Name == Category &&
+                               where z.Category.Title == Category &&
                                (z.English.Contains(Filter) ||
                                z.Polish.Contains(Filter))
                                select z;
@@ -330,7 +345,7 @@ namespace ClickEnglish
                 using (var ctx = new DictionaryContext())
                 {
                     var temp = from z in ctx.Dictionary
-                               where z.Category.Name == Category
+                               where z.Category.Title == Category
                                select z;
 
                     dgDictionary.ItemsSource = null;

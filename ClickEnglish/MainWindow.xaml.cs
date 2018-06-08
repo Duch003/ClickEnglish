@@ -30,11 +30,21 @@ namespace ClickEnglish
                 var categories = from z in context.Categories
                                  select z;
 
+                //Count categories
+                var countCategories = categories.Count();
+                //If any category doesnt exists, create new default
+                if (countCategories == 0)
+                    context.Categories.Add(new Category()
+                    {
+                        CategoryID = 0,
+                        Title = "None"
+                    });
+
                 //Save as Dictionary
                 CategoriesDictionary = new Dictionary<int, string>();
                 foreach(var z in categories)
                 {
-                    CategoriesDictionary.Add(z.ID, z.Name);
+                    CategoriesDictionary.Add(z.CategoryID, z.Title);
                 }
 
                 //Count rows in Settings

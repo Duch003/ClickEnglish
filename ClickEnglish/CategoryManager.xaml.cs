@@ -18,6 +18,14 @@ namespace ClickEnglish
             InitializeComponent();
             using (var ctx = new DictionaryContext())
             {
+                var countCategories = (from z in ctx.Categories
+                                       select z).Count();
+                if (countCategories == 0)
+                    ctx.Categories.Add(new Category()
+                    {
+                        CategoryID = 0,
+                        Title = "None"
+                    });
                 dgCategory.ItemsSource = new ObservableCollection<Category>(ctx.Categories.ToList());
             }
             
@@ -53,9 +61,9 @@ namespace ClickEnglish
         {
             foreach (var z in dgCategory.Columns)
             {
-                if (z.Header.ToString() == nameof(Category.ID) || z.Header.ToString() == nameof(Category.Words))
+                if (z.Header.ToString() == nameof(Category.CategoryID) || z.Header.ToString() == nameof(Category.Words))
                     z.IsReadOnly = true;
-                else if (z.Header.ToString() == nameof(Category.Name))
+                else if (z.Header.ToString() == nameof(Category.Title))
                     z.Width = 400;
             }
         }
@@ -69,13 +77,13 @@ namespace ClickEnglish
                 return;
             using (var ctx = new DictionaryContext())
             {
-                var temp = ctx.Categories.Where(z => z.ID == category.ID);
+                var temp = ctx.Categories.Where(z => z.CategoryID == category.CategoryID);
                 if(temp == null)
                     return;
                 if (temp.Count() == 0)
                     return;
                 
-                temp.First().Name = newText;
+                temp.First().Title = newText;
                 ctx.SaveChanges();
             }
         }
@@ -89,7 +97,7 @@ namespace ClickEnglish
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = new Category();
-                tempCategory.Name = "Category name";
+                tempCategory.Title = "Category name";
                 ctx.Categories.Local.Add(tempCategory);
                 
                 ctx.SaveChanges();
@@ -104,7 +112,7 @@ namespace ClickEnglish
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = (from z in ctx.Categories
-                                    where category.ID == z.ID
+                                    where category.CategoryID == z.CategoryID
                                     select z).FirstOrDefault();
                 if (tempCategory == null) return;
                 ctx.Categories.Remove(tempCategory);

@@ -98,7 +98,7 @@ namespace ClickEnglish
             tbPass.Text = "Scored questions: " + Passed;
 
             //Show category
-            tbCategory.Text = temp.Category.Name;
+            tbCategory.Text = temp.Category.Title;
         }
 
         //https://stackoverflow.com/questions/9564174/convert-byte-array-to-image-in-wpf

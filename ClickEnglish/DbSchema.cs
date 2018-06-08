@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClickEnglish
 {
@@ -9,7 +10,8 @@ namespace ClickEnglish
         public DictionaryContext() : base("Dictionary")
         {
             //DropCreateDatabaseIfModelChanges
-            Database.SetInitializer<DictionaryContext>(new DropCreateDatabaseAlways<DictionaryContext>());
+            //DropCreateDatabaseAlways
+            Database.SetInitializer<DictionaryContext>(new DropCreateDatabaseIfModelChanges<DictionaryContext>());
         }
 
         public DbSet<Word> Dictionary { get; set; }
@@ -25,6 +27,11 @@ namespace ClickEnglish
         public string English { get; set; }
         [Required]
         public string Polish { get; set; }
+
+        //Foreign key to Category
+        public int CategoryID { get; set; }
+        [Required]
+        [Index("IX_FirstAndSecond", 1, IsUnique = true)]
         public Category Category { get; set; }
         public double Difficulty { get; set; }
         public byte[] Picture { get; set; }
@@ -33,15 +40,16 @@ namespace ClickEnglish
     public class Category
     {
         [Key]
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public int CategoryID { get; set; }
+        public string Title { get; set; }
 
         public ICollection<Word> Words { get; set; }
 
         public override string ToString()
         {
-            return Name;
+            return Title;
         }
+
     }
 
     public class UserSettings
