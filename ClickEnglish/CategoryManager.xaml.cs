@@ -82,6 +82,10 @@ namespace ClickEnglish
 
         private void AddCategory()
         {
+
+            //TODO Czy nie połączyć obydwu managerów? Ułatwi to zarządzenie
+            //TODO Dopisać kod pilnujący by nie powtarzały się nazwy kategorii
+            //TODO Formularze?
             using (var ctx = new DictionaryContext())
             {
                 var tempCategory = new Category();

@@ -66,7 +66,7 @@ namespace ClickEnglish
                 if (z.Header.ToString() == nameof(Word.ID) || z.Header.ToString() == nameof(Word.Difficulty) || z.Header.ToString() == nameof(Word.Category))
                     z.IsReadOnly = true;
             }
-            //Creae list of Categories
+            //Create list of Categories
             using (var ctx = new DictionaryContext())
             {
                 var categoryList = (from z in ctx.Categories
@@ -78,6 +78,8 @@ namespace ClickEnglish
                     CategoryTitles.Add(z.Name);
                 }
                 CategoryTitles.Add("All");
+                
+                
                 cbxCategories.ItemsSource = CategoryTitles;
                 cbxCategories.SelectedItem = "All";
             }
@@ -342,26 +344,26 @@ namespace ClickEnglish
         }
         #endregion
 
-        public class NullImageConverter : IValueConverter
-        {
-            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                if (value == null)
-                    return DependencyProperty.UnsetValue;
-                return value;
-            }
+        //public class NullImageConverter : IValueConverter
+        //{
+        //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        //    {
+        //        if (value == null)
+        //            return DependencyProperty.UnsetValue;
+        //        return value;
+        //    }
 
-            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-            {
-                // According to https://msdn.microsoft.com/en-us/library/system.windows.data.ivalueconverter.convertback(v=vs.110).aspx#Anchor_1
-                // (kudos Scott Chamberlain), if you do not support a conversion 
-                // back you should return a Binding.DoNothing or a 
-                // DependencyProperty.UnsetValue
-                return Binding.DoNothing;
-                // Original code:
-                // throw new NotImplementedException();
-            }
-        }
+        //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        //    {
+        //        // According to https://msdn.microsoft.com/en-us/library/system.windows.data.ivalueconverter.convertback(v=vs.110).aspx#Anchor_1
+        //        // (kudos Scott Chamberlain), if you do not support a conversion 
+        //        // back you should return a Binding.DoNothing or a 
+        //        // DependencyProperty.UnsetValue
+        //        return Binding.DoNothing;
+        //        // Original code:
+        //        // throw new NotImplementedException();
+        //    }
+        //}
 
     }
 
