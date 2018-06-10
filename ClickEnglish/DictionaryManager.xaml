@@ -7,6 +7,7 @@
 		xmlns:my="clr-namespace:ValueConverters"
         mc:Ignorable="d" Loaded="OnLoad"
         Title="DictionaryManager" Height="600" Width="800">
+	<!---->
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -32,8 +33,9 @@
 			<ColumnDefinition Width="Auto"/>
 		</Grid.ColumnDefinitions>
 		<!--Datagrid with dictionary-->
+		<!---->
 		<DataGrid x:Name="dgDictionary"  Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Opacity="0.7" AutoGenerateColumns="False"
-				  Margin="10" PreviewKeyDown="KeyPreview" CellEditEnding="EditDictionary_End" BeginningEdit="EditDictionary_Begin" >
+				  Margin="10" PreviewKeyDown="KeyPreview" CellEditEnding="EditDictionary_End" BeginningEdit="EditDictionary_Begin">
 			<DataGrid.Resources>
 				<my:NullImageConverter x:Key="NullImageConverter"/>
 			</DataGrid.Resources>
@@ -43,8 +45,8 @@
 				<DataGridTextColumn Header="Polish" Binding="{Binding Polish}" Width="Auto"></DataGridTextColumn>
 
 				
-				<!--<DataGridTextColumn Header="Category" Binding="{Binding Category.Title}" MinWidth="120"></DataGridTextColumn>-->
-				<DataGridComboBoxColumn x:Name="dgcbxCategories" Header="Category" SelectedItemBinding="{Binding CategoryID}" DisplayMemberPath="{Binding Title}"/>
+				<!--<DataGridTextColumn Header="Category" Binding="{Binding Title}" MinWidth="120"></DataGridTextColumn>-->
+				<DataGridComboBoxColumn x:Name="dgcbxCategories" Header="Category" SelectedValueBinding="{Binding Title}"/>
 				<DataGridTextColumn Header="Difficulty" Binding="{Binding Difficulty}" Width="Auto"></DataGridTextColumn>
 				<DataGridTemplateColumn Header="Picture">
 					<DataGridTemplateColumn.CellTemplate>
@@ -66,7 +68,7 @@
 		<!--Searcher and Category selector-->
 		<WrapPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
 			<!--Searcher-->
-			<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" TextChanged="Searcher_TextChanged" MinWidth="255" MaxHeight="40"/>
+			<TextBox x:Name="txtSearcher" Grid.Row="0" Grid.Column="0" Margin="5" MinWidth="255" MaxHeight="40" TextChanged="TextChanged"/>
 			<!--Category selector-->
 			<ComboBox x:Name="cbxCategories" MinWidth="300" Margin="10" SelectionChanged="CategoryChanged"></ComboBox>
 		</WrapPanel>

@@ -215,6 +215,7 @@ namespace ClickEnglish
         {
             this.IsEnabled = false;
             var temp = new DictionaryManager();
+            //var temp = new TestDataGrid();
             temp.ShowDialog();
             this.IsEnabled = true;
         }
