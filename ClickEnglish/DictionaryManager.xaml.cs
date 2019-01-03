@@ -313,11 +313,13 @@ namespace ClickEnglish
         private byte[] PictureManager()
         {
             //Create dialog
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.DefaultExt = ".jpeg";
-            dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
-            dlg.Title = "Select your hint picture.";
-            dlg.Multiselect = false;
+            OpenFileDialog dlg = new OpenFileDialog
+            {
+                DefaultExt = ".jpeg",
+                Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png",
+                Title = "Select your hint picture.",
+                Multiselect = false
+            };
             //Show dialog
             var ans = dlg.ShowDialog();
             switch (ans)
@@ -338,8 +340,8 @@ namespace ClickEnglish
             }
         }
 
-            //Save current values in case user cancel edit or type nothing
-            private void EditDictionary_Begin(object sender, DataGridBeginningEditEventArgs e)
+        //Save current values in case user cancel edit or type nothing
+        private void EditDictionary_Begin(object sender, DataGridBeginningEditEventArgs e)
         {
             //TextBox case
             if (dgDictionary.CurrentItem is TextBox || dgDictionary.CurrentItem is TextBlock)
